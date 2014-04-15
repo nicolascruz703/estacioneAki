@@ -2,6 +2,58 @@
 
 #{selenium}
     // Open the home page, and check that no error occured
-    open('/')
+    open('/admin')
     assertNotTitle('Application error')
+
+   // #1 Verificação da 1.a tela
+    assertTextPresent('Administration')
+    assertTextPresent('Choose the object to edit')
+    assertTextPresent('Estacionamentos')
+
+   // #2 Navegação para a tela de inserção
+    clickAndWait('link=Add')
+    
+   // #3 Inserção com sucesso 
+    type('id=object_nome', 'Estacionamento da EACH')
+	type('id=object_endereco', 'Rua Arlindo Bettio, 1000')
+	type('id=object_cnpj', '6302553000010')
+	type('id=object_latitude', '-23.484468')
+	type('id=object_longitude', '-46.499891')
+	type('id=object_numeroDeVagas', '10')
+	
+	clickAndWait('name=_save')
+	assertTextPresent('The Estacionamento has been created')
+	
+   // #4 Edição com sucesso
+	clickAndWait('link=Estacionamento da EACH')	
+
+	assertTextPresent('Estacionamento da EACH')
+	assertTextPresent('Rua Arlindo Bettio, 1000')
+	//assertTextPresent('6302553000010')
+	//assertTextPresent('-23.484468')
+	//assertTextPresent('-46.499891')
+	assertTextPresent('10')
+	clickAndWait('name=_save')	
+	assertTextPresent('The Estacionamento has been saved')
+
+   // #5 Exclusão com sucesso
+	clickAndWait('link=Estacionamento da EACH')
+	clickAndWait('css=p.crudDelete > input[type="submit"]')	
+	assertTextPresent('The Estacionamento has been deleted')
+
+   // #6 Inserção sem preenchimento
+	clickAndWait('link=Add Estacionamento')
+	clickAndWait('name=_save')
+	assertTextPresent('Please correct errors')
+	
+   // #7 Inserção excedendo o limite de preenchimento
+    type('id=object_nome', 'Estacionamento da Poli')
+	type('id=object_endereco', 'Avenida Prof Luciano Gualberto, 380')
+	type('id=object_cnpj', '630255300008801')
+	type('id=object_latitude', '-23.559570')
+	type('id=object_longitude', '-46.731741')
+	type('id=object_numeroDeVagas', '20')
+	clickAndWait('name=_save')
+	assertTextPresent('Maximum size is 14')
+
 #{/selenium}
