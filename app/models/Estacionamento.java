@@ -14,25 +14,29 @@ public class Estacionamento extends Model {
 
    @Required
    @MaxSize(100)
-   private String nome;
+   public String nome;
 	
    @Required
    @MaxSize(500)
-   private String endereco;   
+   public String endereco;   
    
    @Required
    @MaxSize(14)
-   private String cnpj;
+   public String cnpj;
 	
    @Required
-   private String latitude;
+   public String latitude;
 	
    @Required
-   private String longitude;
+   public String longitude;
    
    @Required
-   private Integer numeroDeVagas;
+   public Integer numeroDeVagas;
 
+   @Required
+   public Integer precoHora;
+
+   
 	public String getNome() {
 		return nome;
 	}
@@ -79,6 +83,14 @@ public class Estacionamento extends Model {
 	
 	public void setNumeroDeVagas(Integer numeroDeVagas) {
 		this.numeroDeVagas = numeroDeVagas;
+	}
+
+	public Integer getprecoHora() {
+		return precoHora;
+	}
+	
+	public void setprecoHora(Integer precoHora) {
+		this.precoHora = precoHora;
 	}
 	
 	public String toString() {
