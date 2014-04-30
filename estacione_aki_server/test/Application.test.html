@@ -5,26 +5,27 @@
     open('/admin')
     assertNotTitle('Application error')
 
-   // #1 VerificaÃ§Ã£o da 1.a tela
-    assertTextPresent('Administration')
-    assertTextPresent('Choose the object to edit')
+   // #1 Verificação da 1.a tela
+    //assertTextPresent('Administração')
+    assertTextPresent('Escolha um objeto para alterar')
     assertTextPresent('Estacionamentos')
 
-   // #2 NavegaÃ§Ã£o para a tela de inserÃ§Ã£o
-    clickAndWait('link=Add')
+   // #2 Navegação para a tela de inserção
+    clickAndWait('link=Adicionar')
     
-   // #3 InserÃ§Ã£o com sucesso 
+   // #3 Inserção com sucesso 
     type('id=object_nome', 'Estacionamento da EACH')
 	type('id=object_endereco', 'Rua Arlindo Bettio, 1000')
 	type('id=object_cnpj', '6302553000010')
 	type('id=object_latitude', '-23.484468')
 	type('id=object_longitude', '-46.499891')
 	type('id=object_numeroDeVagas', '10')
+	type('id=object_precoHora', '7')
 	
 	clickAndWait('name=_save')
-	assertTextPresent('The Estacionamento has been created')
+	assertTextPresent('O Estacionamento foi criado')
 	
-   // #4 EdiÃ§Ã£o com sucesso
+   // #4 Edição com sucesso
 	clickAndWait('link=Estacionamento da EACH')	
 
 	assertTextPresent('Estacionamento da EACH')
@@ -33,27 +34,31 @@
 	//assertTextPresent('-23.484468')
 	//assertTextPresent('-46.499891')
 	assertTextPresent('10')
+	//assertTextPresent('7')
 	clickAndWait('name=_save')	
-	assertTextPresent('The Estacionamento has been saved')
+	assertTextPresent('O Estacionamento foi gravado')
 
-   // #5 ExclusÃ£o com sucesso
+   // #5 Exclusão com sucesso
 	clickAndWait('link=Estacionamento da EACH')
 	clickAndWait('css=p.crudDelete > input[type="submit"]')	
-	assertTextPresent('The Estacionamento has been deleted')
+	assertTextPresent('O Estacionamento foi apagado')
 
-   // #6 InserÃ§Ã£o sem preenchimento
-	clickAndWait('link=Add Estacionamento')
+   // #6 Inserção sem preenchimento
+	clickAndWait('link=Adicionar Estacionamento')
 	clickAndWait('name=_save')
-	assertTextPresent('Please correct errors')
+	assertTextPresent('Corrija os erros por favor')
 	
-   // #7 InserÃ§Ã£o excedendo o limite de preenchimento
+   // #7 Inserção excedendo o limite de preenchimento
     type('id=object_nome', 'Estacionamento da Poli')
 	type('id=object_endereco', 'Avenida Prof Luciano Gualberto, 380')
 	type('id=object_cnpj', '630255300008801')
 	type('id=object_latitude', '-23.559570')
 	type('id=object_longitude', '-46.731741')
 	type('id=object_numeroDeVagas', '20')
+	type('id=object_precoHora', '8')
 	clickAndWait('name=_save')
-	assertTextPresent('Maximum size is 14')
+	//assertTextPresent('Maximum size is 14')
+	assertTextPresent('Corrija os erros por favor')
 
 #{/selenium}
+
