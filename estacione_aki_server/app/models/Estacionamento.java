@@ -85,11 +85,11 @@ public class Estacionamento extends Model {
 		this.numeroDeVagas = numeroDeVagas;
 	}
 
-	public Integer getprecoHora() {
+	public Integer getPrecoHora() {
 		return precoHora;
 	}
 	
-	public void setprecoHora(Integer precoHora) {
+	public void setPrecoHora(Integer precoHora) {
 		this.precoHora = precoHora;
 	}
 	
