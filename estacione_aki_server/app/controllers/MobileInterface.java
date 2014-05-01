@@ -4,13 +4,12 @@ import play.mvc.Controller;
 
 import java.util.ArrayList;
 
-import models.Estacionamento;
+import models.*;
 
 import com.thoughtworks.xstream.XStream;
 
 public class MobileInterface extends Controller {
 
-	
 	public static void listaEstacionamento() {
 		
 		Estacionamento estacionamento1 = new Estacionamento();
@@ -47,23 +46,24 @@ public class MobileInterface extends Controller {
 		
 		// procurar o estacionamento na base de dados correspondente ao CNPJ informado 
 		// confirma se há vaga livre
-		// registrar a reserva para o cpf correspondente
-		// retornar ao celular a posição de vagas livres atualizada
-				
-		Estacionamento estacionamentoReservado = new Estacionamento();
-
-		estacionamentoReservado.nome = "Estacionamento do IME";
-		estacionamentoReservado.endereco = "Rua do Matão, 1010";
-		estacionamentoReservado.cnpj = "63025530000104";
-		estacionamentoReservado.precoHora = 1;
-		estacionamentoReservado.numeroDeVagas = 0;
-		estacionamentoReservado.latitude = "-23.558836";
-		estacionamentoReservado.longitude = "-46.731498";
-
-		XStream xstream = new XStream();
-		xstream.alias("estacionamento", models.Estacionamento.class);
+		// Se positivo: registrar a reserva para o cpf correspondente
+		// 				retornar ao celular a posição de todos os estacionamentos
+		// Se negativo: retornar mensagem de Indisponibilidade
 		
-		renderXml(estacionamentoReservado, xstream);
+		if (cnpj.contentEquals("630255300008801")) {
+
+			// situação em que não há vaga livre
+			Retorno retReservaVaga = new Retorno();
+			
+			retReservaVaga.mensagem = "Nos desculpem... Estacionamento sem vaga disponível no momento.";
+				
+			XStream xstream = new XStream();
+			xstream.alias("retorno", models.Retorno.class);
+
+			renderXml(retReservaVaga, xstream);
+		}
+		else
+			listaEstacionamento();
 	}
 	
 	public static void cancelaReservaVaga(String cpf) {
@@ -72,20 +72,8 @@ public class MobileInterface extends Controller {
 		// Cancelar a reserva da vaga
 		// retornar ao celular a posição de vagas livres atualizada
 		
-		Estacionamento estacionamentoCancelado = new Estacionamento();
-
-		estacionamentoCancelado.nome = "Estacionamento do IME";
-		estacionamentoCancelado.endereco = "Rua do Matão, 1010";
-		estacionamentoCancelado.cnpj = "63025530000104";
-		estacionamentoCancelado.precoHora = 1;
-		estacionamentoCancelado.numeroDeVagas = 1;
-		estacionamentoCancelado.latitude = "-23.558836";
-		estacionamentoCancelado.longitude = "-46.731498";		
+		listaEstacionamento();
 		
-		XStream xstream = new XStream();
-		xstream.alias("estacionamento", models.Estacionamento.class);
-		
-		renderXml(estacionamentoCancelado, xstream);
 	}
 }
 
