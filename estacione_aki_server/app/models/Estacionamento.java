@@ -10,35 +10,48 @@ import java.util.*;
 import play.data.validation.*;
  
 @Entity
+@Table(name = "estacionamento")
 public class Estacionamento extends Model {
 
    @Required
    @MaxSize(100)
+   @Column(name = "nome")
    public String nome;
 	
    @Required
    @MaxSize(500)
+   @Column(name = "endereco")
    public String endereco;   
    
    @Required
    @MaxSize(14)
+   @Column(name = "cnpj")
    public String cnpj;
 	
    @Required
+   @Column(name = "latitude")
    public String latitude;
 	
    @Required
+   @Column(name = "longitude")
    public String longitude;
    
    @Required
+   @Column(name = "numeroDeVagas")
    public Integer numeroDeVagas;
 
    @Required
+   @Column(name = "precoHora")
    public Integer precoHora;
 
    
+   public static List<Estacionamento> findAll(final String orderBy) {
+		final List<Estacionamento> lstResult = find("ORDER BY " + orderBy).fetch();
+		return lstResult;
+	}
+   
 	public String getNome() {
-		return nome;
+		return this.nome;
 	}
 	
 	public void setNome(String nome) {

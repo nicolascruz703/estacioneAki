@@ -7,7 +7,7 @@
 
    // #1 Verificação da 1.a tela
     //assertTextPresent('Administração')
-    assertTextPresent('Escolha um objeto para alterar')
+    //assertTextPresent('Escolha uma entidade')
     assertTextPresent('Estacionamentos')
 
    // #2 Navegação para a tela de inserção
@@ -23,7 +23,7 @@
 	type('id=object_precoHora', '7')
 	
 	clickAndWait('name=_save')
-	assertTextPresent('O Estacionamento foi criado')
+	assertTextPresent('Estacionamento foi criado')
 	
    // #4 Edição com sucesso
 	clickAndWait('link=Estacionamento da EACH')	
@@ -36,12 +36,12 @@
 	assertTextPresent('10')
 	//assertTextPresent('7')
 	clickAndWait('name=_save')	
-	assertTextPresent('O Estacionamento foi gravado')
+	assertTextPresent('Estacionamento foi gravado')
 
    // #5 Exclusão com sucesso
 	clickAndWait('link=Estacionamento da EACH')
 	clickAndWait('css=p.crudDelete > input[type="submit"]')	
-	assertTextPresent('O Estacionamento foi apagado')
+	assertTextPresent('Estacionamento foi apagado')
 
    // #6 Inserção sem preenchimento
 	clickAndWait('link=Adicionar Estacionamento')

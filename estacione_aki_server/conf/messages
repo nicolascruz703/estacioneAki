@@ -9,11 +9,18 @@ longitude=longitude
 numeroDeVagas=número de vagas
 precoHora=preço por hora
 
+
+# Dados Motorista
+nomeMotorista=Nome do Motorista
+marcaVeiculo=Marca do Veículo
+modeloVeiculo=Modelo do Veículo
+placaVeiculo=Placa do Veículo
+
 # play/modules/crud (administration) 
 crud.title = Administração 
 crud.home = Home 
 crud.blank = Novo 
-crud.index.title = Escolha um objeto para alterar 
+crud.index.title =  
 crud.index.objectType = Tipo de Objeto
 crud.index.action =  
 crud.index.add = Adicionar 
@@ -33,9 +40,9 @@ crud.hasErrors = Corrija os erros por favor
 crud.blank.title = Adicionar &{%s} 
 crud.saveAndAddAnother = Gravar e Adicionar outro 
 crud.delete = Apagar &{%s} 
-crud.created =O &{%s} foi criado 
-crud.saved =O &{%s} foi gravado 
-crud.deleted =O &{%s} foi apagado 
+crud.created = &{%s} criado 
+crud.saved = &{%s} gravado 
+crud.deleted = &{%s} apagado 
 crud.delete.error = Não é possível excluir 
 crud.search = Procurar 
 crud.none = (não) 
