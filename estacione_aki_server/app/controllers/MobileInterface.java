@@ -36,6 +36,7 @@ public class MobileInterface extends Controller {
 	// Se negativo: retornar mensagem de Erro
 		
 	  try {	
+		  
 		// Verifica se estacionamento existe na base e quantas vagas estão disponíveis
 	    Query query = JPA.em().createNativeQuery("select numeroDeVagas from estacionamento where cnpj = '" + cnpj +"'");
 	    Object result = query.getSingleResult();
@@ -46,7 +47,10 @@ public class MobileInterface extends Controller {
 	    query = JPA.em().createNativeQuery("select reservaCNPJ from motorista where cpf = '" + cpf +"'");
 	    result = query.getSingleResult();
 	    
-	    if (result!=null) {
+	    String strCNPJ = result.toString();
+	    System.out.println("teste: x" + strCNPJ + "x");
+   
+	    if (!strCNPJ.isEmpty()) {
 	    	// O sistema não permite que o motorista que solicite uma segunda reserva se já efetuou uma reserva anteriormente   	
 	    	msgRetorno ("Não é possivel efetuar mais de uma reserva.");
 	    }
@@ -63,8 +67,12 @@ public class MobileInterface extends Controller {
 	    		System.out.println("Estacionamento alterado:" + result);
 		
 	    		// atualiza o registro de motorista com o cnpj do estacionamento
-	    		query = JPA.em().createNativeQuery("update motorista set reservaCNPJ = '" + cnpj +"', dataHoraReserva = current_timestamp where cpf ='" + cpf +"'");  
+	    		query = JPA.em().createNativeQuery("update motorista set reservaCNPJ = '" + cnpj +"', dataHoraReserva = date_format(current_timestamp, '%d/%m/%Y %k:%i:%s') where cpf ='" + cpf +"'");  
 	    		result = query.executeUpdate();
+	    			    		
+	    		query = JPA.em().createNativeQuery("update motorista set ReservaEstacionamento = (select nome from estacionamento where cnpj = '" + cnpj +"')");
+	    		result = query.executeUpdate();		
+	    		
 	    		System.out.println("Motorista alterado:" + result);
 		    
 	    		listaEstacionamento();
@@ -87,21 +95,21 @@ public class MobileInterface extends Controller {
 		    Query query = JPA.em().createNativeQuery("select reservaCNPJ from motorista where cpf = '" + cpf +"'");
 		    Object result = query.getSingleResult();
 		    System.out.println("CNPJ Estacionamento reservado:" + result);
-			    
-		    if (result==null) {
+			 
+		    String strReservaCNPJ = result.toString();
+		    if (strReservaCNPJ.isEmpty()) {
 		    	// Nenhuma reserva efetuada para este motorista
 		    	msgRetorno ("Não há reserva registrada para o cpf " + cpf);
 		    }
 		    else
 		    {
-			    String strReservaCNPJ = result.toString();
 	    		// Subtrai o n.o de vagas de 1 unidade para este cnpj
 	    		query = JPA.em().createNativeQuery("update estacionamento set numeroDeVagas = numeroDeVagas + 1 where cnpj = '" + strReservaCNPJ +"'");  
 	    		result = query.executeUpdate();
 	    		System.out.println("Estacionamento alterado:" + strReservaCNPJ);
 		    	
 		    	// atualiza o registro de motorista com o cnpj do estacionamento
-	    		query = JPA.em().createNativeQuery("update motorista set reservaCNPJ = null, dataHoraReserva = null where cpf ='" + cpf +"'");  
+	    		query = JPA.em().createNativeQuery("update motorista set reservaCNPJ = '', reservaEstacionamento = '', dataHoraReserva = '' where cpf ='" + cpf +"'");  
 	    		result = query.executeUpdate();
 	    		System.out.println("Motorista alterado:" + cpf);
 		    	

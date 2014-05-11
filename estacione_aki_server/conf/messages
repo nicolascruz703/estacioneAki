@@ -9,12 +9,13 @@ longitude=longitude
 numeroDeVagas=número de vagas
 precoHora=preço por hora
 
-
 # Dados Motorista
 nomeMotorista=Nome do Motorista
 marcaVeiculo=Marca do Veículo
 modeloVeiculo=Modelo do Veículo
 placaVeiculo=Placa do Veículo
+dataHoraReserva=Horário Reserva
+reservaEstacionamento=Estacionamento
 
 # play/modules/crud (administration) 
 crud.title = Administração 

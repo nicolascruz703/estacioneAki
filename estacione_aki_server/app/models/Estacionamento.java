@@ -3,10 +3,11 @@ package models;
 
 import play.*;
 import play.db.jpa.*;
- 
+
 import javax.persistence.*;
+
 import java.util.*;
- 
+
 import play.data.validation.*;
  
 @Entity
@@ -14,25 +15,29 @@ import play.data.validation.*;
 public class Estacionamento extends Model {
 
    @Required
-   @MaxSize(100)
+   @MaxSize(50)
    @Column(name = "nome")
    public String nome;
 	
    @Required
-   @MaxSize(500)
+   @MaxSize(100)
    @Column(name = "endereco")
    public String endereco;   
    
    @Required
+   @Unique
+   @MinSize(14)
    @MaxSize(14)
-   @Column(name = "cnpj")
+   @Column(unique = true, name="cnpj")
    public String cnpj;
 	
    @Required
+   @MaxSize(10)
    @Column(name = "latitude")
    public String latitude;
 	
    @Required
+   @MaxSize(10)
    @Column(name = "longitude")
    public String longitude;
    
