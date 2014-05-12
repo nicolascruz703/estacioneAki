@@ -6,59 +6,58 @@
     assertNotTitle('Application error')
 
    // #1 Verificação da 1.a tela
-    //assertTextPresent('Administração')
-    //assertTextPresent('Escolha uma entidade')
-    assertTextPresent('Estacionamentos')
+    assertTextPresent('Tipo de Objeto')
 
-   // #2 Navegação para a tela de inserção
+   // #2 Navegação para a tela de estacionamento
     clickAndWait('link=Adicionar')
-    
-   // #3 Inserção com sucesso 
-    type('id=object_nome', 'Estacionamento da EACH')
-	type('id=object_endereco', 'Rua Arlindo Bettio, 1000')
-	type('id=object_cnpj', '6302553000010')
-	type('id=object_latitude', '-23.484468')
-	type('id=object_longitude', '-46.499891')
-	type('id=object_numeroDeVagas', '10')
-	type('id=object_precoHora', '7')
-	
+   
+   // #3 Estacionamento - Inserção sem preenchimento -> Erro
 	clickAndWait('name=_save')
-	assertTextPresent('Estacionamento foi criado')
+	assertTextPresent('Corrija os erros por favor')
+	    
+   // #4 Estacionamento - Inserção com sucesso 
+    type('id=object_nome', 'Estacionamento da FEA')
+	type('id=object_endereco', 'Rua Prof Almeida Prado, 22')
+	type('id=object_cnpj', '63025530000108')
+	type('id=object_latitude', '-23.558609')
+	type('id=object_longitude', '-46.729145')
+	type('id=object_numeroDeVagas', '0')
+	type('id=object_precoHora', '1')
+	clickAndWait('name=_save')
+	//assertTextPresent('Estacionamento criado')
 	
-   // #4 Edição com sucesso
-	clickAndWait('link=Estacionamento da EACH')	
-
-	assertTextPresent('Estacionamento da EACH')
-	assertTextPresent('Rua Arlindo Bettio, 1000')
-	//assertTextPresent('6302553000010')
-	//assertTextPresent('-23.484468')
-	//assertTextPresent('-46.499891')
-	assertTextPresent('10')
-	//assertTextPresent('7')
+   // #5 Estacionamento - Edição com sucesso
+	clickAndWait('link=Estacionamento da FEA')	
+	assertTextPresent('Estacionamento da FEA')
+	type('id=object_endereco', 'Rua Prof Almeida Prado, 23')	
 	clickAndWait('name=_save')	
-	assertTextPresent('Estacionamento foi gravado')
+	//assertTextPresent('Estacionamento gravado')
 
-   // #5 Exclusão com sucesso
-	clickAndWait('link=Estacionamento da EACH')
-	clickAndWait('css=p.crudDelete > input[type="submit"]')	
-	assertTextPresent('Estacionamento foi apagado')
+   // #6 Navegação para a Home
+    clickAndWait('link=Home')
 
-   // #6 Inserção sem preenchimento
-	clickAndWait('link=Adicionar Estacionamento')
+   // #7 Navegação para a Tela de Motorista
+	clickAndWait('xpath=(//a[contains(text(),"Adicionar")])[2]')
+
+   // #8 Motorista - Inserção com sucesso 
+    type('id=object_nomeMotorista', 'Marcos Chaim')
+	type('id=object_cpf', '10987654321')
+	type('id=object_marcaVeiculo', 'Ford')
+	type('id=object_modeloVeiculo', 'Focus')
+	type('id=object_placaVeiculo', 'XXX-1234')
 	clickAndWait('name=_save')
-	assertTextPresent('Corrija os erros por favor')
-	
-   // #7 Inserção excedendo o limite de preenchimento
-    type('id=object_nome', 'Estacionamento da Poli')
-	type('id=object_endereco', 'Avenida Prof Luciano Gualberto, 380')
-	type('id=object_cnpj', '630255300008801')
-	type('id=object_latitude', '-23.559570')
-	type('id=object_longitude', '-46.731741')
-	type('id=object_numeroDeVagas', '20')
-	type('id=object_precoHora', '8')
-	clickAndWait('name=_save')
-	//assertTextPresent('Maximum size is 14')
-	assertTextPresent('Corrija os erros por favor')
+	assertTextPresent('Motorista criado')
+
+   // #5 Motorista - Edição com sucesso
+	clickAndWait('link=Marcos Chaim')	
+	//assertTextPresent('Marcos Chaim')
+	type('id=object_placaVeiculo', 'XYZ-1234')	
+	clickAndWait('name=_save')	
+	assertTextPresent('Motorista gravado')
+
+   // #6 WS Listagem de Estacionamentos
+	//open('/mobileinterface/listaestacionamento')
+	//assertTextPresent('Estacionamento da FEA')
 
 #{/selenium}
 
