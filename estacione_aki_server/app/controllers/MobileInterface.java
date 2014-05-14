@@ -75,7 +75,8 @@ public class MobileInterface extends Controller {
 	    		
 	    		System.out.println("Motorista alterado:" + result);
 		    
-	    		listaEstacionamento();
+	    		//listaEstacionamento();
+	    		msgRetorno ("Reserva realizada com sucesso!!!");
 	    	}
 		}
 	    
@@ -113,7 +114,8 @@ public class MobileInterface extends Controller {
 	    		result = query.executeUpdate();
 	    		System.out.println("Motorista alterado:" + cpf);
 		    	
-		    	listaEstacionamento();
+		    	//listaEstacionamento();
+	    		msgRetorno ("Cancelamento realizado com sucesso!!!");
 		    }
 	   	  }
 		  catch (NoResultException e) {
