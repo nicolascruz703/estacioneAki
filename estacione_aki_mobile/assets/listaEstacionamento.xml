@@ -1,0 +1,22 @@
+<list>
+	<estacionamento>
+	    <id>1</id>
+		<nome>Estacionamento do IME</nome>
+		<endereco>Rua do Matão, 1010</endereco>
+		<cnpj>63025530000104</cnpj>
+		<latitude>-23.558836</latitude>
+		<longitude>-46.731498</longitude>
+		<numeroDeVagas>1</numeroDeVagas>
+		<precoHora>1</precoHora>
+	</estacionamento>
+	<estacionamento>
+		<id>2</id>
+		<nome>Estacionamento da Poli</nome>
+		<endereco>Avenida Prof Luciano Gualberto, 380</endereco>
+		<cnpj>630255300008801</cnpj>
+		<latitude>-23.559570</latitude>
+		<longitude>-46.731741</longitude>
+		<numeroDeVagas>10</numeroDeVagas>
+		<precoHora>2</precoHora>
+	</estacionamento>
+</list>
