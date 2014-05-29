@@ -21,7 +21,7 @@
 	type('id=object_cnpj', '63025530000108')
 	type('id=object_latitude', '-23.558609')
 	type('id=object_longitude', '-46.729145')
-	type('id=object_numeroDeVagas', '0')
+	type('id=object_numeroDeVagas', '10')
 	type('id=object_precoHora', '1')
 	clickAndWait('name=_save')
 	//assertTextPresent('Estacionamento criado')
@@ -56,8 +56,32 @@
 	assertTextPresent('Motorista gravado')
 
    // #6 WS Listagem de Estacionamentos
-	//open('/mobileinterface/listaestacionamento')
-	//assertTextPresent('Estacionamento da FEA')
+	open('/mobileinterface/listaestacionamento')
+	//driver.findElement(By.XPath("Estacionamento da FEA"))
+	
+	// #7 Solicita reserva para o motorista estacionamento recém cadastrado 
+	open('/mobileinterface/reservaVaga?cnpj=63025530000108&cpf=10987654321')
 
+	// #8 Confirma reserva realizada
+	open('/admin')
+	clickAndWait('link=Motoristas')
+	assertTextPresent('Estacionamento da FEA')
+	  
+	// #9 Solicita cancelamento da reserva para o motorista recém cadastrado 
+	open('/mobileinterface/cancelaReservaVaga?cpf=10987654321')
+
+	// #10 Confirma reserva cancelada
+	open('/admin')
+	clickAndWait('link=Motoristas')
+	assertTextNotPresent('Estacionamento da FEA')
+
+	// #11 Limpar o banco
+	clickAndWait('link=Marcos Chaim')
+	clickAndWait('css=p.crudDelete > input[type="submit"]')
+	clickAndWait('link=Home')
+	clickAndWait('link=Estacionamentos')
+	clickAndWait('link=Estacionamento da FEA')
+	clickAndWait('css=p.crudDelete > input[type="submit"]')
+	
 #{/selenium}
 
