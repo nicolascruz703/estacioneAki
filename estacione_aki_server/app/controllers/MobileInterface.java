@@ -2,9 +2,6 @@ package controllers;
 
 import play.mvc.Controller;
 
-
-
-
 //import java.util.ArrayList;
 import java.util.*;
 
@@ -129,7 +126,17 @@ public class MobileInterface extends Controller {
 		    	renderXml(retReservaVaga, xstream);
 					
 			   }   
+	  
+	}
+
+	public static void listaParquimetro() {
 		
+		List<Parquimetro> list = Parquimetro.findAll("id");
+		
+		XStream xstream = new XStream();
+		xstream.alias("parquimetro", models.Parquimetro.class);
+		
+		renderXml(list, xstream);		
 	}
 	
 	private static void msgRetorno (String msg) {

@@ -17,6 +17,10 @@ placaVeiculo=Placa do Veículo
 dataHoraReserva=Horário Reserva
 reservaEstacionamento=Estacionamento
 
+#Dados Parquimetro
+id=Identificador Parquímetro
+idVaga=Identificador Vaga Parquímetro
+
 # play/modules/crud (administration) 
 crud.title = Administração 
 crud.home = Home 
