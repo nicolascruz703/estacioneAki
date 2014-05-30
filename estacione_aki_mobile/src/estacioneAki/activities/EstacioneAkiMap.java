@@ -33,6 +33,10 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 
 	private GoogleMap mMap;
 	final Context context = this;
+	//ANA--- PRUEBA
+	private String VarTeste;
+	
+	//--------------------
 	
 	void plotaEstacionamentosNoMapa(Iterator<Estacionamento> iterList){
 	    while(iterList.hasNext()){
@@ -43,6 +47,7 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 	        marker.title(e.getNome());
 	        marker.snippet("Preço/hora: R$ "+e.getPrecoHora()+". "+e.getEndereco()+"- "+e.getCnpj());
 	        mMap.addMarker(marker);
+	        VarTeste = "esta es una pruba para ver si actualiza el git";
 	    } 
 	}
     
