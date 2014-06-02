@@ -37,7 +37,7 @@ public class MobileInterface extends Controller {
 		// Verifica se estacionamento existe na base e quantas vagas estão disponíveis
 	    Query query = JPA.em().createNativeQuery("select numeroDeVagas from estacionamento where cnpj = '" + cnpj +"'");
 	    Object result = query.getSingleResult();
-	    System.out.println("Quantidade de Vagas:" + result);    
+	    System.out.println("Quantidade de Vagas em estacionamento para reserva:" + result);    
 	    int intNumeroDeVagas = (Integer) result;
 	    
 	    //Verifica se o Motorista existe na base e se a já há reserva registrada
@@ -45,8 +45,7 @@ public class MobileInterface extends Controller {
 	    result = query.getSingleResult();
 	    
 	    String strCNPJ = result.toString();
-	    System.out.println("teste: x" + strCNPJ + "x");
-   
+	       
 	    if (!strCNPJ.isEmpty()) {
 	    	// O sistema não permite que o motorista que solicite uma segunda reserva se já efetuou uma reserva anteriormente   	
 	    	msgRetorno ("Não é possivel efetuar mais de uma reserva.");
@@ -61,7 +60,7 @@ public class MobileInterface extends Controller {
 	    		// Subtrai o n.o de vagas de 1 unidade para este cnpj
 	    		query = JPA.em().createNativeQuery("update estacionamento set numeroDeVagas = numeroDeVagas - 1 where cnpj = '" + cnpj +"'");  
 	    		result = query.executeUpdate();
-	    		System.out.println("Estacionamento alterado:" + result);
+	    		System.out.println("Estacionamento reservado:" + result);
 		
 	    		// atualiza o registro de motorista com o cnpj do estacionamento
 	    		query = JPA.em().createNativeQuery("update motorista set reservaCNPJ = '" + cnpj +"', dataHoraReserva = date_format(current_timestamp, '%d/%m/%Y %k:%i:%s') where cpf ='" + cpf +"'");  
@@ -70,7 +69,7 @@ public class MobileInterface extends Controller {
 	    		query = JPA.em().createNativeQuery("update motorista set ReservaEstacionamento = (select nome from estacionamento where cnpj = '" + cnpj +"')");
 	    		result = query.executeUpdate();		
 	    		
-	    		System.out.println("Motorista alterado:" + result);
+	    		System.out.println("Reserva Motorista registrada:" + result);
 		    
 	    		//listaEstacionamento();
 	    		msgRetorno ("Reserva realizada com sucesso!!!");
@@ -101,31 +100,23 @@ public class MobileInterface extends Controller {
 		    }
 		    else
 		    {
-	    		// Subtrai o n.o de vagas de 1 unidade para este cnpj
+	    		// Soma o n.o de vagas de 1 unidade para este cnpj
 	    		query = JPA.em().createNativeQuery("update estacionamento set numeroDeVagas = numeroDeVagas + 1 where cnpj = '" + strReservaCNPJ +"'");  
 	    		result = query.executeUpdate();
-	    		System.out.println("Estacionamento alterado:" + strReservaCNPJ);
+	    		System.out.println("Cancelada Reserva Estacionamento:" + strReservaCNPJ);
 		    	
 		    	// atualiza o registro de motorista com o cnpj do estacionamento
 	    		query = JPA.em().createNativeQuery("update motorista set reservaCNPJ = '', reservaEstacionamento = '', dataHoraReserva = '' where cpf ='" + cpf +"'");  
 	    		result = query.executeUpdate();
-	    		System.out.println("Motorista alterado:" + cpf);
+	    		System.out.println("Cancelado reserva Motorista:" + cpf);
 		    	
 		    	//listaEstacionamento();
 	    		msgRetorno ("Cancelamento realizado com sucesso!!!");
 		    }
 	   	  }
 		  catch (NoResultException e) {
-
-		    	Retorno retReservaVaga = new Retorno();				
-		    	retReservaVaga.mensagem = "CPF não encontrado na base de dados";
-		    					
-		    	XStream xstream = new XStream();
-		    	xstream.alias("retorno", models.Retorno.class);
-
-		    	renderXml(retReservaVaga, xstream);
-					
-			   }   
+			  msgRetorno ("CPF não encontrado na base de dados");
+		   }   
 	  
 	}
 
@@ -139,6 +130,27 @@ public class MobileInterface extends Controller {
 		renderXml(list, xstream);		
 	}
 	
+	public static void loginMotorista (String cpf, String senha) {
+		  try {	
+			    //Verifica se o Motorista existe na base e se a já há reserva registrada
+			    Query query = JPA.em().createNativeQuery("select senha from motorista where cpf = '" + cpf +"'");
+			    Object result = query.getSingleResult();
+			 
+			    String strSenha = result.toString();
+			    if (strSenha.contentEquals(senha)) {
+			    	// Login aprovado
+			    	msgRetorno ("Login autorizado para o cpf " + cpf);
+			    }
+			    else {
+			    	msgRetorno ("Login negado para o cpf " + cpf);
+			    }
+		  	  }
+		  catch (NoResultException e) {
+			  msgRetorno ("CPF não encontrado na base de dados");
+		  }   
+	}
+	
+	
 	private static void msgRetorno (String msg) {
 		Retorno retReservaVaga = new Retorno();				
     	retReservaVaga.mensagem = msg;
@@ -148,6 +160,5 @@ public class MobileInterface extends Controller {
 
     	renderXml(retReservaVaga, xstream);	
 	}
-
 }
 	

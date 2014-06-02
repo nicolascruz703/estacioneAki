@@ -1,0 +1,20 @@
+use schestacione;
+
+SET GLOBAL event_scheduler = ON;
+SET @@global.event_scheduler = ON;
+SET GLOBAL event_scheduler = 1;
+SET @@global.event_scheduler = 1;
+
+GRANT all on *.* to root@localhost;
+
+DELIMITER $$
+create event service_cancelaReserva
+on schedule
+  every 10 second
+do BEGIN
+  update estacionamento set numeroDeVagas = numeroDeVagas + 1 where cnpj in (select reservaCNPJ from motorista where current_timestamp > str_to_date(dataHoraReserva,'%d/%m/%Y %k:%i:%s') + 100);
+  update motorista set reservaCNPJ = '', reservaEstacionamento = '', dataHoraReserva = '' where current_timestamp > str_to_date(dataHoraReserva,'%d/%m/%Y %k:%i:%s') + 100;
+END $$
+DELIMITER ;
+
+alter table motorista modify column senha varchar(8);

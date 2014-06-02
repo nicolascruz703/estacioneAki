@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simulador de Parquimetro</title>
+     <meta charset="utf-8" />
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ </head>
+<body>
+		<p>Simulador de Parquimetro</p>
+
+		<div>
+			Identifica&ccedil;&atilde;o do Parquimetro: 1</div>
+		<div>
+			Endereço do Parquimetro: ${oParquimetro.endereco}</div>
+		<div>
+			Latitude: ${oParquimetro.latitude}</div>
+		<div>
+			Longitude: ${oParquimetro.longitude}</div>
+		<div>
+			Identifica&ccedil;&atilde;o da Vaga: ${oParquimetro.idVaga}</div>
+		<table align="center" border="3" cellpadding="1" cellspacing="1" style="width: 500px;">
+			<tbody>
+				<tr>
+					<td>
+						<p style="text-align: center;">
+							Valor Hora: R$ ${oParquimetro.precoHora},00</p>
+						<p style="text-align: center;">
+							Vaga Livre</p>
+						<p style="text-align: center;">
+							</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>
+			&nbsp;</p>
+		<div>
+			<input checked="checked" name="statusParquimetro" type="radio" value="0" />Vaga Livre</div>
+		<div>
+			<input name="statusParquimetro" type="radio" value="0" />Vaga Ocupada por Ve&iacute;culo de Placa:<input maxlength="8" name="txtPlaca" size="10" type="text" value="" /></div>
+		<div>
+			<div>
+				<input name="statusParquimetro" type="radio" value="0" />Vaga em Pagamento/Desocupa&ccedil;&atilde;o. Valor Recebido:&nbsp;<input maxlength="8" name="txtValor" size="8" type="text" value="R$ -" /></div>
+		</div>
+
+</body>
+</html>

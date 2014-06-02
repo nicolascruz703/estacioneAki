@@ -23,6 +23,10 @@ public class Motorista extends Model {
 	   @MinSize(11)
 	   public String cpf;
 
+	   @Password
+	   @MaxSize(8)
+	   public String senha;
+	   
 	   @Required
 	   @MaxSize(20)
 	   public String marcaVeiculo;
