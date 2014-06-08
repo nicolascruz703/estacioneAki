@@ -10,6 +10,8 @@ import org.simpleframework.xml.core.Persister;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -33,21 +35,43 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 
 	private GoogleMap mMap;
 	final Context context = this;
-	//ANA--- PRUEBA
-	private String VarTeste;
-	
-	//--------------------
 	
 	void plotaEstacionamentosNoMapa(Iterator<Estacionamento> iterList){
 	    while(iterList.hasNext()){
 	    	Estacionamento e = (Estacionamento) iterList.next();
+	    	int precoHora = (new Integer(e.getPrecoHora()).intValue());
 	    	MarkerOptions marker = new MarkerOptions();
 	    	LatLng position = new LatLng(new Double(e.getLatitude()), new Double(e.getLongitude()));
 	        marker.position(position);
 	        marker.title(e.getNome());
 	        marker.snippet("Preço/hora: R$ "+e.getPrecoHora()+". "+e.getEndereco()+"- "+e.getCnpj());
+	        if(!e.temVagas()){
+	        	marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.sem_vagas));
+	        }else{
+		        if(precoHora > 5){
+		        	//escolher icone padrao
+		        	
+		        }else{
+		        	switch (precoHora){
+		        		case 1:
+		        			marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rsz_1real));
+		        			break;
+		        		case 2:
+		        			marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rsz_2reais));
+		        			break;
+		        		case 3:
+		        			marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rsz_3reais));
+		        			break;
+		        		case 4:
+		        			marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rsz_4reais));
+		        			break;
+		        		case 5:
+		        			marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rsz_5reais));
+		        			break;
+		        	}
+		        }
+	        }
 	        mMap.addMarker(marker);
-	        VarTeste = "esta es una pruba para ver si actualiza el git";
 	    } 
 	}
     
