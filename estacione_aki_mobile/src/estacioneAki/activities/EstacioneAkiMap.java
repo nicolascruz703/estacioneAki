@@ -3,10 +3,10 @@ package estacioneAki.activities;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
-
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-
+import org.simpleframework.xml.stream.Position;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
@@ -15,27 +15,38 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import estacioneAki.servico.ConexaoServidor;
 import estacioneAki.servico.getListEstacionamentosFromXML;
 import estacioneAki.util.Estacionamento;
 import estacioneAki.util.EstacionamentoList;
 import estacioneAki.util.Retorno;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.AssetManager;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
+@SuppressLint("UseValueOf")
+public class EstacioneAkiMap extends Activity implements OnMarkerClickListener, LocationListener {
 
 	private GoogleMap mMap;
-	final Context context = this;
-	
+	final Context context = this;	
+	private LatLng posicaoAtual;
+	private LocationManager locationManager;	
+	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters	
+    private static final long MIN_TIME_BW_UPDATES = 20000;//minimum time between updates in milliseconds
+	  
 	void plotaEstacionamentosNoMapa(Iterator<Estacionamento> iterList){
 	    while(iterList.hasNext()){
 	    	Estacionamento e = (Estacionamento) iterList.next();
@@ -81,14 +92,40 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
        setContentView(R.layout.activity_estacione_aki_map);
        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
        mMap.setOnMarkerClickListener(this);
+       
+       // ----- habilitar GPS
+       mMap.setMyLocationEnabled(true);             
+       locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);       
+       locationManager = (LocationManager) this.context.getSystemService(LOCATION_SERVICE);
+       if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){    	   
+           locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
+                   MIN_TIME_BW_UPDATES,
+                   MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+           Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); 	           	                      
+           if(location!=null)
+           {     
+        	   Log.v("location",location.getLatitude() + " log "+ location.getLongitude());
+        	   onLocationChanged(location);        	   
+           }else{
+               Toast.makeText(getBaseContext(), "Não pode se encontrar a sua ubicação", Toast.LENGTH_SHORT).show();
+   		   }
+	    
+       }else{
+           Toast.makeText(getBaseContext(), "Não existe proveedor de GPS", Toast.LENGTH_SHORT).show();
+       }
+       mMap.moveCamera(CameraUpdateFactory.newLatLng(posicaoAtual));		
+       mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+       
+       //------------------------
        ConexaoServidor Conexao = new ConexaoServidor();
        try {
     	   
     	   Iterator<Estacionamento> iterList = Conexao.listaEstacionamentos().estaciomentoList.iterator();
-    	   plotaEstacionamentosNoMapa(iterList);
-		} catch (Exception e) {
+    	   plotaEstacionamentosNoMapa(iterList);    	 
+       } catch (Exception e) {
 			e.printStackTrace();
-		}
+       }
+            
     }
 
 	@Override
@@ -152,4 +189,22 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 		alertDialog.show();
 		return false;
 	}
+
+	@Override
+	public void onLocationChanged(Location location) {	     
+		posicaoAtual = new LatLng(new Double(location.getLatitude()), new Double(location.getLongitude()));		
+		Log.v("location",location.getLatitude() + " log "+ location.getLongitude());
+	}
+ 
+	@Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+	@Override
+	public void onProviderEnabled(String provider) {
+    	Log.v("gps activo", "ok");
+    }
+	@Override
+    public void onProviderDisabled(String provider) {
+    	Log.v("gps activo", "falso");
+    }
+
 }
