@@ -6,25 +6,13 @@ import java.lang.*;
 import play.mvc.Controller;
 import models.*;
 import play.db.jpa.JPA;
+
 import javax.persistence.*;
 
 public class telaParquimetro extends Controller {
 	
     public static void index() {
-
- //   	Parquimetro oParquimetro = new Parquimetro();
- //   	Parquimetro oParquimetro = Parquimetro.findById(1);
-    		
- //   	oParquimetro.idVaga = 1;
- //   	oParquimetro.endereco = "Rua Eugene Carriere no 30";
- //   	oParquimetro.latitude = "-34.123";
- //   	oParquimetro.longitude = "-23.1231";
- //  	oParquimetro.precoHora = 3;
-    	
- //   	System.out.println("Latitude:" + oParquimetro.latitude);
-    	
- //       render(oParquimetro);
-    	
+	
 	    Query query = JPA.em().createNativeQuery("select idVaga, endereco, latitude, longitude, precoHora from parquimetro");
 	    List <Object[]> listaParquimetro = query.getResultList();
     	
@@ -43,4 +31,25 @@ public class telaParquimetro extends Controller {
     	
     }
 	
+    public static void executaParquimetro(String txtPlaca, Integer statusParquimetro) {
+
+	 System.out.println("Placa do veiculo: " + txtPlaca);
+	 System.out.println("Status Parquimetro: " + statusParquimetro);
+	 try {
+		 
+		 if (statusParquimetro == 1) {  // Vaga ocupada por um veículo
+
+		    Query query = JPA.em().createNativeQuery("select nomeMotorista from motorista where placaVeiculo='" + txtPlaca +"'");
+		    Object result = query.getSingleResult();
+		    System.out.println("Nome do motorista na vaga:" + result);    
+		    //String strNomeMotorista  = (String) result;
+			 
+		 }
+
+	  }
+	  catch (NoResultException e) {
+		  System.out.println("Não é usuário Estacione Aki");
+		  }  
+    }
+    
 }
