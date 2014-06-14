@@ -26,6 +26,12 @@ public class ConexaoServidor {
 		String UrlListaestacionamentos = URLs.LISTA_ESTACIONAMENTOS;		
 		return new getListEstacionamentosFromXML().execute(UrlListaestacionamentos).get();		
 	}
+	
+	//chamada do servi�o de listaEstacionamentos
+	public String verificaReserva(String cpf) throws InterruptedException, ExecutionException{		
+		String UrlListaestacionamentos = URLs.VERIFICA_RESERVA;		
+		return new getRespostaFromWSVerifcaReserva().execute(UrlListaestacionamentos+cpf).get();		
+	}
 
 }
 
