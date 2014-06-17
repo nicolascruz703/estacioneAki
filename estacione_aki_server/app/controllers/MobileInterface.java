@@ -66,7 +66,7 @@ public class MobileInterface extends Controller {
 	    		query = JPA.em().createNativeQuery("update motorista set reservaCNPJ = '" + cnpj +"', dataHoraReserva = date_format(current_timestamp, '%d/%m/%Y %k:%i:%s') where cpf ='" + cpf +"'");  
 	    		result = query.executeUpdate();
 	    			    		
-	    		query = JPA.em().createNativeQuery("update motorista set ReservaEstacionamento = (select nome from estacionamento where cnpj = '" + cnpj +"')");
+	    		query = JPA.em().createNativeQuery("update motorista set ReservaEstacionamento = (select nome from estacionamento where cnpj = '" + cnpj +"') where cpf ='" + cpf +"'");
 	    		result = query.executeUpdate();		
 	    		
 	    		System.out.println("Reserva Motorista registrada:" + result);
@@ -139,17 +139,33 @@ public class MobileInterface extends Controller {
 			    String strSenha = result.toString();
 			    if (strSenha.contentEquals(senha)) {
 			    	// Login aprovado
-			    	msgRetorno ("Login autorizado para o cpf " + cpf);
+			    	msgRetorno ("1:Login autorizado para o cpf " + cpf);
 			    }
 			    else {
-			    	msgRetorno ("Login negado para o cpf " + cpf);
+			    	msgRetorno ("0:Login negado para o cpf " + cpf);
 			    }
 		  	  }
 		  catch (NoResultException e) {
-			  msgRetorno ("CPF não encontrado na base de dados");
+			  msgRetorno ("0:CPF não encontrado na base de dados");
 		  }   
 	}
 	
+	public static void verificaReserva (String cpf) {
+		  try {	
+			    //Verifica se o Motorista existe na base e se a já há reserva registrada
+			    Query query = JPA.em().createNativeQuery("select reservaCNPJ from motorista where cpf = '" + cpf +"'");
+			    Object result = query.getSingleResult();
+			    
+			    String strCNPJ = result.toString();
+			    System.out.println("x" + strCNPJ+ "x");
+			    
+			    if (result.toString().isEmpty()) msgRetorno ("nao_encontrado");
+			    else  msgRetorno (result.toString());
+		      }
+		   catch (NoResultException e) {
+			  msgRetorno ("nao_encontrado");
+		  }   
+	}
 	
 	private static void msgRetorno (String msg) {
 		Retorno retReservaVaga = new Retorno();				

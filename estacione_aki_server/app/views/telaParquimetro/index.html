@@ -7,6 +7,7 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
  </head>
 <body>
+	<form action="@{telaParquimetro.executaParquimetro()}" method="GET">
 		<p>Simulador de Parquimetro</p>
 
 		<div>
@@ -23,26 +24,72 @@
 			<tbody>
 				<tr>
 					<td>
-						<p style="text-align: center;">
-							Valor Hora: R$ ${oParquimetro.precoHora},00</p>
-						<p style="text-align: center;">
-							Vaga Livre</p>
-						<p style="text-align: center;">
-							</p>
+					<script language = "javascript" type ="text/javascript">
+				//		<!-- Hide JavaScript
+							var strstatusVaga = 0 + 0${oParquimetro.statusVaga};
+									  					
+		  					if (strstatusVaga==0) {
+		  						document.write("<p align=center>Valor Hora: R$ ${oParquimetro.precoHora},00</p>");
+		  						document.write("<p align=center>Vaga Livre</p>");
+		  					} 
+		  					else if (strstatusVaga==1) {
+		  						document.write("<p align=center>Vaga Ocupada desde: ${oParquimetro.dataHoraOcupacao}</p>");	
+		  						document.write("<p align=center>Veículo Placa: ${oParquimetro.placaVeiculoOcupacao}</p>");
+
+		  						var strusuarioEstacioneAki = 0 + 0${oParquimetro.usuarioEstacioneAki};
+		  						if (strusuarioEstacioneAki==1) document.write("<p align=center>(Usuário Estacione Aki)</p>");
+		  					}
+		  					else if (strstatusVaga==2) {
+		  						document.write("<p align=center>Valor: R$ ${oParquimetro.precoHora},00</p>");	
+		  						document.write("<p align=center>Vaga Ocupada por: ${oParquimetro.tempoOcupacao}</p>");
+		  						document.write("<p align=center>Valor a pagar: R$ ${oParquimetro.valorAPagar},00</p>");
+		  						
+		  						document.write("<input name=\"strvalorAPagar\" type=\"hidden\" value=\"${oParquimetro.valorAPagar}\">");
+		  						
+		  					}
+		  					else if (strstatusVaga==3) {
+
+		  						var strvalorAPagar2 = Number (${oParquimetro.valorAPagar});
+		  						var strvalorPago2 = Number (${oParquimetro.valorPago});
+		  						
+		  						document.write("<p align=center>Valor a pagar: R$" + strvalorAPagar2 + ",00 </p>");	
+		  						document.write("<p align=center>Valor pago: R$" + strvalorPago2 + ",00 </p>");
+		  						
+		  						var intdiferenca = strvalorAPagar2 - strvalorPago2;
+		  						
+		  						document.write("<p align=center>Diferença: R$" + intdiferenca + ",00 </p>");		  					}	
+		  			//	-->
+					</script>			
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<p>
-			&nbsp;</p>
-		<div>
-			<input checked="checked" name="statusParquimetro" type="radio" value="0" />Vaga Livre</div>
-		<div>
-			<input name="statusParquimetro" type="radio" value="0" />Vaga Ocupada por Ve&iacute;culo de Placa:<input maxlength="8" name="txtPlaca" size="10" type="text" value="" /></div>
-		<div>
-			<div>
-				<input name="statusParquimetro" type="radio" value="0" />Vaga em Pagamento/Desocupa&ccedil;&atilde;o. Valor Recebido:&nbsp;<input maxlength="8" name="txtValor" size="8" type="text" value="R$ -" /></div>
-		</div>
+		  
+		<p>&nbsp;</p>
+		
+		<script> 
+			var strstatusVaga = 0 + 0${oParquimetro.statusVaga};
+			
+			document.write("<div><input name=\"intstatusParquimetro\" type=\"radio\" value=\"0\"");
+			if (strstatusVaga==0) document.write("checked=\"checked\"");
+			document.write("/>Vaga Livre</div>");
+			
+			document.write("<div><input name=\"intstatusParquimetro\" type=\"radio\" value=\"1\"");
+			if (strstatusVaga==1) document.write("checked=\"checked\"");
+			document.write("/>Ve&iacute;culo ocupando a vaga - Placa:<input maxlength=\"8\" name=\"strplacaVeiculoOcupacao\" size=\"10\" type=\"text\" value=\"\" /></div>");
 
+			document.write("<div><input name=\"intstatusParquimetro\" type=\"radio\" value=\"2\"");
+			if (strstatusVaga==2) document.write("checked=\"checked\"");
+			document.write("/>Consulta do valor do estacionamento</div>");
+
+			document.write("<div><input name=\"intstatusParquimetro\" type=\"radio\" value=\"3\"");
+			if (strstatusVaga==3) document.write("checked=\"checked\"");
+			document.write("/>Valor Pago: R$&nbsp;<input maxlength=\"8\" name=\"strvalorPago\" size=\"8\" type=\"text\" value=\"\" />-> Ve&iacute;culo libera a vaga</div>");
+
+		</script>
+			
+		<br>
+		<input type="submit" value="Processa Parquímetro" onClick="window.location.href=window.location.href"/>
+	</form>
 </body>
 </html>
