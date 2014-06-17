@@ -28,7 +28,7 @@ public class getListEstacionamentosFromXML extends AsyncTask<String, Void , Esta
  			ListaDeEstacionamentos = serializer.read(EstacionamentoList.class, is);  			
  		    
  			//Teste
-	        Id = ListaDeEstacionamentos.estaciomentoList.get(0).toString();
+	        Id = ListaDeEstacionamentos.estacionamentoList.get(0).toString();
  			Log.v("Clase getListEstacionamentosFromXML", "Ultimo Id d estacionam "+Id);
  		 } catch (Exception e) { 
  			e.printStackTrace(); 
