@@ -40,7 +40,7 @@ public class Parquimetro extends Model {
 
 	   @Hidden	   
 	   @Column(name = "statusVaga")
-	   public Integer statusVaga;
+	   public String statusVaga;
 	   
 	   @Hidden
 	   @Column(name = "dataHoraOcupacao")
@@ -49,6 +49,22 @@ public class Parquimetro extends Model {
 	   @Hidden
 	   @Column(name = "placaVeiculoOcupacao")
 	   public String placaVeiculoOcupacao;
+
+	   @Hidden
+	   @Column(name = "usuarioEstacioneAki")
+	   public String usuarioEstacioneAki;
+
+	   @Hidden
+	   @Column(name = "tempoOcupacao")
+	   public String tempoOcupacao;
+	   
+	   @Hidden
+	   @Column(name = "valorAPagar")
+	   public String valorAPagar;
+	   
+	   @Hidden
+	   @Column(name = "valorPago")
+	   public String valorPago;	   
 	   
 	   public static List<Parquimetro> findAll(final String orderBy) {
 			final List<Parquimetro> lstResult = find("ORDER BY " + orderBy).fetch();

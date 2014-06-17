@@ -1,0 +1,1 @@
+alter table parquimetro modify statusVaga varchar(1);
