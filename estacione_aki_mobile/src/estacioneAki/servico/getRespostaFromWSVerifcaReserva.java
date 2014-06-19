@@ -26,18 +26,18 @@ public class getRespostaFromWSVerifcaReserva extends AsyncTask<String, Void , St
 			Serializer serializer2 = new Persister();
 			
 			mensagem = serializer2.read(Retorno.class, is2);
-			Log.v("Clase getRespostaFromWSReserva", "msg:"+mensagem.getMensagem());
+			Log.v("Clase getRespostaFromWSVerificaReserva", "msg:"+mensagem.getMensagem());
 			MsgParaTela = mensagem.getMensagem(); 			
 		}
 		catch (Exception e){
 			e.printStackTrace();
-		    Log.v("Clase getRespostaFromWSReserva", "ReservaFalse "+mensagem.getMensagem());
+		    Log.v("Clase getRespostaFromWSVerificaReserva", "VerificaReservaFalse "+mensagem.getMensagem());
 		} 			
 	 
         return MsgParaTela;   
      } 
      
      protected void onPostExecute(String msgParaTela) {     	 
-    	 Log.v("Clase getRespostaFromWSReserva-posexecute", mensagem.getMensagem());     	 
+    	 Log.v("Clase getRespostaFromWSVerficaReserva-posexecute", mensagem.getMensagem());     	 
      } 
 } 
