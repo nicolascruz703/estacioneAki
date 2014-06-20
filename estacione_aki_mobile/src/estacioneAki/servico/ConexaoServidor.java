@@ -27,11 +27,16 @@ public class ConexaoServidor {
 		return new getListEstacionamentosFromXML().execute(UrlListaestacionamentos).get();		
 	}
 	
-	//chamada do servi�o de listaEstacionamentos
+	//chamada do servi�o de verificar reserva
 	public String verificaReserva(String cpf) throws InterruptedException, ExecutionException{		
 		String UrlListaestacionamentos = URLs.VERIFICA_RESERVA;		
 		return new getRespostaFromWSVerifcaReserva().execute(UrlListaestacionamentos+cpf).get();		
 	}
 
+	//chamada do servi�o de login motorista
+		public String loginMotorista(String cpf, String senha) throws InterruptedException, ExecutionException{		
+			String UrlLoginMotorista = URLs.LOGIN_MOTORISTA;		
+			return new getAutorizacaoLogin().execute(UrlLoginMotorista+cpf+"&senha="+senha).get();		
+		}
 }
 

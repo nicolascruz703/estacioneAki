@@ -45,7 +45,7 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 
 	private GoogleMap mMap;
 	final Context context = this;
-	static String CPF = "12345678901";
+	static String CPF = "0";
 	EstacionamentoList estacionamentos; 
 	String cnpjEstacionamentoReservado;
 	private LatLng posicaoAtual;
@@ -176,7 +176,11 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
        setContentView(R.layout.activity_estacione_aki_map);
        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
        mMap.setOnMarkerClickListener(this);
-              
+
+       //recebe a intent do login
+       Intent intent = getIntent();
+       CPF = intent.getStringExtra("cpf_usuario");
+           
        ConexaoServidor conexao = new ConexaoServidor();
        try {
     	 //plotar estacionamentos
@@ -196,8 +200,6 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 	   } catch (Exception e) {
 			e.printStackTrace();
 	   }
-       
-
 
     }
 
