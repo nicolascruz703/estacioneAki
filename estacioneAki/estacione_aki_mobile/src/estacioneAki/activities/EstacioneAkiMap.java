@@ -3,11 +3,14 @@ package estacioneAki.activities;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
+
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.simpleframework.xml.stream.Position;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -15,6 +18,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
 import estacioneAki.servico.ConexaoServidor;
 import estacioneAki.servico.getListEstacionamentosFromXML;
 import estacioneAki.util.Estacionamento;
@@ -38,7 +42,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 @SuppressLint("UseValueOf")
-public class EstacioneAkiMap extends Activity implements OnMarkerClickListener, LocationListener {
+public class EstacioneAkiMap extends Activity implements OnMarkerClickListener, LocationListener{
 
 	private GoogleMap mMap;
 	final Context context = this;	
@@ -46,7 +50,10 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener, 
 	private LocationManager locationManager;	
 	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters	
     private static final long MIN_TIME_BW_UPDATES = 20000;//minimum time between updates in milliseconds
-	  
+	
+    private Intent intent;
+    private String Login;
+    
 	void plotaEstacionamentosNoMapa(Iterator<Estacionamento> iterList){
 	    while(iterList.hasNext()){
 	    	Estacionamento e = (Estacionamento) iterList.next();
@@ -90,44 +97,77 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
        setContentView(R.layout.activity_estacione_aki_map);
-       mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-       mMap.setOnMarkerClickListener(this);
        
-       // ----- habilitar GPS
-       mMap.setMyLocationEnabled(true);             
-       locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);       
-       locationManager = (LocationManager) this.context.getSystemService(LOCATION_SERVICE);
-       if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){    	   
-           locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
-                   MIN_TIME_BW_UPDATES,
-                   MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-           Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); 	           	                      
-           if(location!=null)
-           {     
-        	   Log.v("location",location.getLatitude() + " log "+ location.getLongitude());
-        	   onLocationChanged(location);        	   
-           }else{
-               Toast.makeText(getBaseContext(), "Não pode se encontrar a sua ubicação", Toast.LENGTH_SHORT).show();
-   		   }
-	    
-       }else{
-           Toast.makeText(getBaseContext(), "Não existe proveedor de GPS", Toast.LENGTH_SHORT).show();
+       //recebe a intent enviada
+       intent = getIntent();
+       Log.v("inicio de sesion ok","new intent");
+       //armazena os números digitados
+       Login = intent.getStringExtra("Login");
+     
+       if(Login=="ok")
+       {
+    	   Log.v("inicio de sesion ok","true");
+    	   mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();	       
+	       mMap.setOnMarkerClickListener(this);       
+	       mMap.setMyLocationEnabled(true);
+	       
+	       // ----- habilitar GPS
+	       locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);       
+	       locationManager = (LocationManager) this.context.getSystemService(LOCATION_SERVICE);
+	       if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){    	   
+	           locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
+	                   MIN_TIME_BW_UPDATES,
+	                   MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+	           Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER); 	           	                      
+	           if(location!=null)
+	           {     
+	        	   Log.v("location",location.getLatitude() + " log "+ location.getLongitude());
+	        	   onLocationChanged(location);        	   
+	           }else{
+	               Toast.makeText(getBaseContext(), "Não pode se encontrar a sua ubicação", Toast.LENGTH_SHORT).show();
+	   		   }
+		    
+	       }else{
+	           Toast.makeText(getBaseContext(), "Não existe proveedor de GPS", Toast.LENGTH_SHORT).show();
+	       }
+	       mMap.moveCamera(CameraUpdateFactory.newLatLng(posicaoAtual));		
+	       mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+	       
+	       //---- tela login
+	       //Log.v("pasar para loginactivity", "antes");
+	       //Intent intent = new Intent(this, LoginActivity.class);       
+	       //startActivityForResult(intent, 1);
+	       
+	       //----- plotar estacionamentos
+	       ConexaoServidor Conexao = new ConexaoServidor();
+	       try {
+	    	   
+	    	   Iterator<Estacionamento> iterList = Conexao.listaEstacionamentos().estaciomentoList.iterator();
+	    	   plotaEstacionamentosNoMapa(iterList);    	 
+	       } catch (Exception e) {
+				e.printStackTrace();
+	       }
        }
-       mMap.moveCamera(CameraUpdateFactory.newLatLng(posicaoAtual));		
-       mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-       
-       //------------------------
-       ConexaoServidor Conexao = new ConexaoServidor();
-       try {
-    	   
-    	   Iterator<Estacionamento> iterList = Conexao.listaEstacionamentos().estaciomentoList.iterator();
-    	   plotaEstacionamentosNoMapa(iterList);    	 
-       } catch (Exception e) {
-			e.printStackTrace();
+       else
+       {
+    	   Log.v("errorinicio de sesion","false");
        }
-            
     }
 
+	//protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+	  //  if (requestCode == 1) {
+	    //    if(resultCode == RESULT_OK){	        	
+	      //      String result=intent.getStringExtra("cpf_usuario");
+	        //    Log.v("login act ok", result);
+	        //}
+	        //if (resultCode == RESULT_CANCELED) {
+	            //Write your code if there's no result
+	        	//Log.v("login act fallo", "-");
+	        //}
+	    //}
+	//}
+	
 	@Override
 	public boolean onMarkerClick(Marker marker) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
