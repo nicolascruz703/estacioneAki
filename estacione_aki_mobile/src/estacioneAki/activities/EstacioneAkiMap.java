@@ -1,12 +1,14 @@
 package estacioneAki.activities;
 
 import java.io.InputStream;
+
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
@@ -34,6 +36,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 
 public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 
@@ -42,7 +48,12 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 	static String CPF = "12345678901";
 	EstacionamentoList estacionamentos; 
 	String cnpjEstacionamentoReservado;
-	
+	private LatLng posicaoAtual;
+	private LocationManager locationManager;
+	private LocationListener locationListener;
+	private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters	
+    private static final long MIN_TIME_BW_UPDATES = 20000;//minimum time between updates in milliseconds
+    
 
 	void plotaEstacionamentosNoMapa(Iterator<Estacionamento> iterList, String estacionamentoReservado){
 
@@ -165,15 +176,29 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
        setContentView(R.layout.activity_estacione_aki_map);
        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
        mMap.setOnMarkerClickListener(this);
+              
        ConexaoServidor conexao = new ConexaoServidor();
        try {
+    	 //plotar estacionamentos
     	   estacionamentos = conexao.listaEstacionamentos();
     	   Iterator<Estacionamento> iterList = estacionamentos.estacionamentoList.iterator();
     	   cnpjEstacionamentoReservado = conexao.verificaReserva(CPF);
     	   plotaEstacionamentosNoMapa(iterList, cnpjEstacionamentoReservado);
-		} catch (Exception e) {
+    	   
+    	   // ----- habilitar GPS
+           mMap.setMyLocationEnabled(true);             
+           posicaoAtual = new LatLng(-23.559411, -46.731476);
+           locationListener = new MyLocationListener();
+           locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);           
+           locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+           mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(posicaoAtual,15));
+
+	   } catch (Exception e) {
 			e.printStackTrace();
-		}
+	   }
+       
+
+
     }
 
 	@Override
@@ -283,6 +308,40 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 		}
 		return fezReserva;
 	}
+	
+	//ANA
+		public class MyLocationListener implements LocationListener
+		{
+			public LatLng posicaoAtual;
+			
+			@Override
+			public void onLocationChanged(Location loc)
+			{
+				loc.getLatitude();
+				loc.getLongitude();
+				String Text = "Minha ubicação atual é: " +
+				"Latitud = " + loc.getLatitude() +
+				"Longitud = " + loc.getLongitude();
+				//Toast.makeText( getApplicationContext(), Text, Toast.LENGTH_SHORT).show();	
+				
+				posicaoAtual = new LatLng(new Double(loc.getLatitude()), new Double(loc.getLongitude()));
+				
+				
+			}
+		 
+			@Override
+			public void onProviderDisabled(String provider)
+			{	Toast.makeText( getApplicationContext(),"GPS Desligado",Toast.LENGTH_SHORT ).show();}
+			 
+			@Override
+			public void onProviderEnabled(String provider)
+			{	Toast.makeText( getApplicationContext(),"GPS Ligado",Toast.LENGTH_SHORT).show();}
+			 
+			@Override
+			public void onStatusChanged(String provider, int status, Bundle extras)
+			{	}	 
+		}    
+	    //-------------
 }
 
 
