@@ -13,7 +13,7 @@
 		<div>
 			Identifica&ccedil;&atilde;o do Parquimetro: 1</div>
 		<div>
-			Endereço do Parquimetro: ${oParquimetro.endereco}</div>
+			Endereço da vaga de Parquimetro: ${oParquimetro.endereco}</div>
 		<div>
 			Latitude: ${oParquimetro.latitude}</div>
 		<div>
@@ -76,15 +76,15 @@
 			
 			document.write("<div><input name=\"intstatusParquimetro\" type=\"radio\" value=\"1\"");
 			if (strstatusVaga==1) document.write("checked=\"checked\"");
-			document.write("/>Ve&iacute;culo ocupando a vaga - Placa:<input maxlength=\"8\" name=\"strplacaVeiculoOcupacao\" size=\"10\" type=\"text\" value=\"\" /></div>");
+			document.write("/>Ve&iacute;culo entrando na vaga - Placa:<input maxlength=\"8\" name=\"strplacaVeiculoOcupacao\" size=\"10\" type=\"text\" value=\"\" /></div>");
 
 			document.write("<div><input name=\"intstatusParquimetro\" type=\"radio\" value=\"2\"");
 			if (strstatusVaga==2) document.write("checked=\"checked\"");
-			document.write("/>Consulta do valor do estacionamento</div>");
+			document.write("/>Motorista consulta o valor do tempo estacionado na vaga do Parqu&iacute;metro</div>");
 
 			document.write("<div><input name=\"intstatusParquimetro\" type=\"radio\" value=\"3\"");
 			if (strstatusVaga==3) document.write("checked=\"checked\"");
-			document.write("/>Valor Pago: R$&nbsp;<input maxlength=\"8\" name=\"strvalorPago\" size=\"8\" type=\"text\" value=\"\" />-> Ve&iacute;culo libera a vaga</div>");
+			document.write("/>Ve&iacute;culo saindo da vaga - Valor Pago: R$&nbsp;<input maxlength=\"8\" name=\"strvalorPago\" size=\"8\" type=\"text\" value=\"\" /></div>");
 
 		</script>
 			
