@@ -217,13 +217,13 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 			alertDialogBuilder
 			.setMessage("Deseja cancelar uma vaga no "+estacionamentoReservado.getNome()+"?")
 			.setCancelable(false)
-			.setPositiveButton("voltar",
+			.setPositiveButton("não",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,	int id) {
 							Log.v("botão voltar clicado", "v");
 						}
 					})
-			.setNeutralButton("cancelar", 
+			.setNeutralButton("sim", 
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,	int id) {
 							ConexaoServidor Conexao = new ConexaoServidor();								
@@ -238,7 +238,8 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 								e.printStackTrace();
 							}
 							for(int i = 0; i < 5000000; i++);
-							Intent i = new Intent(context, EstacioneAkiMap.class);  
+							Intent i = new Intent(context, EstacioneAkiMap.class);
+							i.putExtra("cpf_usuario", CPF);
 							startActivity(i);
 						}					
 			});			
@@ -247,13 +248,13 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 			alertDialogBuilder
 			.setMessage("Deseja reservar uma vaga?")
 			.setCancelable(false)
-			.setPositiveButton("voltar",
+			.setPositiveButton("não",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,	int id) {
 							Log.v("botão voltar clicado", "v");
 						}
 					})
-			.setNegativeButton("reservar",
+			.setNegativeButton("sim",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog,	int id) {
 							ConexaoServidor conexao = new ConexaoServidor();
@@ -265,7 +266,8 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 									salvaReserva(true, cnpjEstacionamentoClicado);
 								}
 								for(int i = 0; i < 5000000; i++);
-								Intent i = new Intent(context, EstacioneAkiMap.class);  
+								Intent i = new Intent(context, EstacioneAkiMap.class);
+								i.putExtra("cpf_usuario", CPF);
 								startActivity(i);
 							}catch (Exception e) {								
 									e.printStackTrace();
