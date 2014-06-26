@@ -1,28 +1,20 @@
 package estacioneAki.activities;
 
-import java.io.InputStream;
-
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
-
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import estacioneAki.servico.ConexaoServidor;
-import estacioneAki.servico.getListEstacionamentosFromXML;
 import estacioneAki.util.Estacionamento;
 import estacioneAki.util.EstacionamentoList;
-import estacioneAki.util.Retorno;
+import estacioneAki.util.Parquimetro;
+import estacioneAki.util.ParquimetroList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -30,13 +22,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -46,7 +35,8 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 	private GoogleMap mMap;
 	final Context context = this;
 	static String CPF = "0";
-	EstacionamentoList estacionamentos; 
+	EstacionamentoList estacionamentos;
+	ParquimetroList parquimetros;
 	String cnpjEstacionamentoReservado;
 	private LatLng posicaoAtual;
 	private LocationManager locationManager;
@@ -55,6 +45,98 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
     private static final long MIN_TIME_BW_UPDATES = 20000;//minimum time between updates in milliseconds
     
 
+	void plotaParquimetrosNoMapa(Iterator<Parquimetro> iterList){
+
+		while(iterList.hasNext()){
+			Parquimetro p = (Parquimetro) iterList.next();
+	    	int precoHora = (new Integer(p.getPrecoHora()).intValue());
+	    	MarkerOptions marker = new MarkerOptions();
+	    	LatLng position = new LatLng(new Double(p.getLatitude()), new Double(p.getLongitude()));
+	        marker.position(position);
+	        marker.title("Parquímetro "+p.getEndereco());
+	        marker.snippet("Preço/hora: R$ "+p.getPrecoHora()+".");
+	        marker.draggable(false); //todos os marker de parquimetro sao drag false
+	        if(precoHora > 10){
+		        	//escolher icone padrao
+		    }else{
+	        	switch (precoHora){
+        		case 1:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_01_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_01_c));
+        			}
+        	     	break;
+        		case 2:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_02_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_02_c));
+        			}
+        			break;
+        		case 3:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_03_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_03_c));
+        			}
+        			break;
+        		case 4:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_04_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_04_c));
+        			}
+        			break;
+        		case 5:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_05_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_05_c));
+        			}
+        			break;
+        		case 6:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_06_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_06_c));
+        			}
+        			break;
+        		case 7:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_07_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_07_c));
+        			}
+        			break;
+        		case 8:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_08_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_08_c));
+        			}
+        			break;
+        		case 9:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_09_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_09_c));
+        			}
+        			break;
+        		case 10:
+        			if(p.getStatusVaga() == null)
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_10_a));
+        			else{
+        				marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.rd_10_c));
+        			}
+        			break;
+
+		        }
+	        }
+        	mMap.addMarker(marker);
+		} 
+	}
+	
 	void plotaEstacionamentosNoMapa(Iterator<Estacionamento> iterList, String estacionamentoReservado){
 
 		while(iterList.hasNext()){
@@ -65,6 +147,7 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 	        marker.position(position);
 	        marker.title(e.getNome());
 	        marker.snippet("Preço/hora: R$ "+e.getPrecoHora()+". "+e.getEndereco()+"- "+e.getCnpj());
+	        marker.draggable(true); //estacionamento são true
 	        if(precoHora > 10){
 		        	//escolher icone padrao
 		    }else{
@@ -185,10 +268,13 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
        try {
     	 //plotar estacionamentos
     	   estacionamentos = conexao.listaEstacionamentos();
+    	   parquimetros = conexao.listaParquimetros();
+    	   
     	   Iterator<Estacionamento> iterList = estacionamentos.estacionamentoList.iterator();
+    	   Iterator<Parquimetro> parqListIt = parquimetros.parquimetroList.iterator(); 
     	   cnpjEstacionamentoReservado = conexao.verificaReserva(CPF);
     	   plotaEstacionamentosNoMapa(iterList, cnpjEstacionamentoReservado);
-    	   
+    	   plotaParquimetrosNoMapa(parqListIt);
     	   // ----- habilitar GPS
            mMap.setMyLocationEnabled(true);             
            posicaoAtual = new LatLng(-23.559411, -46.731476);
@@ -206,74 +292,77 @@ public class EstacioneAkiMap extends Activity implements OnMarkerClickListener {
 	@Override
 	public boolean onMarkerClick(Marker marker) {
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-		String[] snippet = marker.getSnippet().split(" ");
-		String precoHora = snippet[1]+" "+snippet[2];
-		String[] snippet2 = marker.getSnippet().split("- ");
-		final String cnpjEstacionamentoClicado = snippet2[1];
-		Estacionamento estacionamentoReservado = estacionamentos.getPorCnpj(cnpjEstacionamentoReservado);
-		Boolean fezReserva = carregaReserva();
-		if(fezReserva){
-			alertDialogBuilder.setTitle("Você precisa cancelar uma reserva realizada.");
-			alertDialogBuilder
-			.setMessage("Deseja cancelar uma vaga no "+estacionamentoReservado.getNome()+"?")
-			.setCancelable(false)
-			.setPositiveButton("não",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,	int id) {
-							Log.v("botão voltar clicado", "v");
-						}
-					})
-			.setNeutralButton("sim", 
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,	int id) {
-							ConexaoServidor Conexao = new ConexaoServidor();								
-							try {
-								String respostaWBCancelaReserva = Conexao.cancelarVaga(CPF);	
-								Toast.makeText(getApplicationContext(), respostaWBCancelaReserva, Toast.LENGTH_LONG).show();
-								Log.v("respostaCancelaReserva", respostaWBCancelaReserva);
-								if(respostaWBCancelaReserva.equals("Cancelamento realizado com sucesso!!!")){
-									salvaReserva(false, "sem_reserva");
-								}
-							} catch (Exception e) {								
-								e.printStackTrace();
+		
+		if(marker.isDraggable()){ //estacionamento
+			String[] snippet = marker.getSnippet().split(" ");
+			String precoHora = snippet[1]+" "+snippet[2];
+			String[] snippet2 = marker.getSnippet().split("- ");
+			final String cnpjEstacionamentoClicado = snippet2[1];
+			Estacionamento estacionamentoReservado = estacionamentos.getPorCnpj(cnpjEstacionamentoReservado);
+			Boolean fezReserva = carregaReserva();
+			if(fezReserva){
+				alertDialogBuilder.setTitle("Você precisa cancelar uma reserva realizada.");
+				alertDialogBuilder
+				.setMessage("Deseja cancelar uma vaga no "+estacionamentoReservado.getNome()+"?")
+				.setCancelable(false)
+				.setPositiveButton("não",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,	int id) {
+								Log.v("botão voltar clicado", "v");
 							}
-							for(int i = 0; i < 5000000; i++);
-							Intent i = new Intent(context, EstacioneAkiMap.class);
-							i.putExtra("cpf_usuario", CPF);
-							startActivity(i);
-						}					
-			});			
-		}else{
-			alertDialogBuilder.setTitle(marker.getTitle()+"\nPreço/hora "+precoHora);
-			alertDialogBuilder
-			.setMessage("Deseja reservar uma vaga?")
-			.setCancelable(false)
-			.setPositiveButton("não",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,	int id) {
-							Log.v("botão voltar clicado", "v");
-						}
-					})
-			.setNegativeButton("sim",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,	int id) {
-							ConexaoServidor conexao = new ConexaoServidor();
-							String respostaWBReserva = null;
-							try {
-								respostaWBReserva = conexao.reservarVaga(cnpjEstacionamentoClicado, CPF);
-								Toast.makeText(getApplicationContext(), respostaWBReserva, Toast.LENGTH_LONG).show();
-								if(respostaWBReserva.equals("Reserva realizada com sucesso!!!")){
-									salvaReserva(true, cnpjEstacionamentoClicado);
+						})
+				.setNeutralButton("sim", 
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,	int id) {
+								ConexaoServidor Conexao = new ConexaoServidor();								
+								try {
+									String respostaWBCancelaReserva = Conexao.cancelarVaga(CPF);	
+									Toast.makeText(getApplicationContext(), respostaWBCancelaReserva, Toast.LENGTH_LONG).show();
+									Log.v("respostaCancelaReserva", respostaWBCancelaReserva);
+									if(respostaWBCancelaReserva.equals("Cancelamento realizado com sucesso!!!")){
+										salvaReserva(false, "sem_reserva");
+									}
+								} catch (Exception e) {								
+									e.printStackTrace();
 								}
 								for(int i = 0; i < 5000000; i++);
 								Intent i = new Intent(context, EstacioneAkiMap.class);
 								i.putExtra("cpf_usuario", CPF);
 								startActivity(i);
-							}catch (Exception e) {								
-									e.printStackTrace();
+							}					
+				});			
+			}else{
+				alertDialogBuilder.setTitle(marker.getTitle()+"\nPreço/hora "+precoHora);
+				alertDialogBuilder
+				.setMessage("Deseja reservar uma vaga?")
+				.setCancelable(false)
+				.setPositiveButton("não",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,	int id) {
+								Log.v("botão voltar clicado", "v");
 							}
-						}
-					});
+						})
+				.setNegativeButton("sim",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,	int id) {
+								ConexaoServidor conexao = new ConexaoServidor();
+								String respostaWBReserva = null;
+								try {
+									respostaWBReserva = conexao.reservarVaga(cnpjEstacionamentoClicado, CPF);
+									Toast.makeText(getApplicationContext(), respostaWBReserva, Toast.LENGTH_LONG).show();
+									if(respostaWBReserva.equals("Reserva realizada com sucesso!!!")){
+										salvaReserva(true, cnpjEstacionamentoClicado);
+									}
+									for(int i = 0; i < 5000000; i++);
+									Intent i = new Intent(context, EstacioneAkiMap.class);
+									i.putExtra("cpf_usuario", CPF);
+									startActivity(i);
+								}catch (Exception e) {								
+										e.printStackTrace();
+								}
+							}
+						});
+			}
 		}
 		AlertDialog alertDialog = alertDialogBuilder.create();
 		alertDialog.show();

@@ -3,6 +3,7 @@ package estacioneAki.servico;
 import java.util.concurrent.ExecutionException;
 
 import estacioneAki.util.EstacionamentoList; 
+import estacioneAki.util.ParquimetroList;
 
 public class ConexaoServidor {
   	
@@ -34,9 +35,15 @@ public class ConexaoServidor {
 	}
 
 	//chamada do servi�o de login motorista
-		public String loginMotorista(String cpf, String senha) throws InterruptedException, ExecutionException{		
+	public String loginMotorista(String cpf, String senha) throws InterruptedException, ExecutionException{		
 			String UrlLoginMotorista = URLs.LOGIN_MOTORISTA;		
 			return new getAutorizacaoLogin().execute(UrlLoginMotorista+cpf+"&senha="+senha).get();		
-		}
+	}
+	
+	//chamada do servi�o de listaEstacionamentos
+	public ParquimetroList listaParquimetros() throws InterruptedException, ExecutionException{		
+			String UrlListaparquimetros = URLs.LISTA_PARQUIMETROS;		
+			return new getListParquimetrosFromXML().execute(UrlListaparquimetros).get();		
+	}
 }
 

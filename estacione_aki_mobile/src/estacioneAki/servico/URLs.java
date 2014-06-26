@@ -7,5 +7,6 @@ public interface URLs {
 	public String CANCELAR_VAGA = "http://54.207.83.104:8080/mobileinterface/cancelaReservaVaga?";
 	public String VERIFICA_RESERVA = "http://54.207.83.104:8080/mobileinterface/verificaReserva?cpf=";
 	public String LOGIN_MOTORISTA = "http://54.207.83.104:8080/mobileinterface/loginMotorista?cpf=";
+	public String LISTA_PARQUIMETROS = "http://54.207.83.104:8080/mobileinterface/listaParquimetro";
 
 }
