@@ -16,7 +16,7 @@ import play.data.validation.*;
 public class Parquimetro extends Model {
 	
 	   @Required
-	   @Column(name = "idVaga")
+	   @Column(name = "idVaga", unique = true)
 	   public Integer idVaga;
 		
 	   @Required
@@ -52,19 +52,19 @@ public class Parquimetro extends Model {
 
 	   @Hidden
 	   @Column(name = "usuarioEstacioneAki")
-	   public String usuarioEstacioneAki;
+	   public String usuarioEstacioneAki="0";
 
 	   @Hidden
 	   @Column(name = "tempoOcupacao")
-	   public String tempoOcupacao;
+	   public String tempoOcupacao = "00:00";
 	   
 	   @Hidden
 	   @Column(name = "valorAPagar")
-	   public String valorAPagar;
+	   public String valorAPagar = "0";
 	   
 	   @Hidden
 	   @Column(name = "valorPago")
-	   public String valorPago;	   
+	   public String valorPago = "0";	   
 	   
 	   public static List<Parquimetro> findAll(final String orderBy) {
 			final List<Parquimetro> lstResult = find("ORDER BY " + orderBy).fetch();

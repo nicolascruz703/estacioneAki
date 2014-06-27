@@ -54,7 +54,7 @@ public class telaParquimetro extends Controller {
 	 
 	 if (intstatusParquimetro == 0) {  // Vaga Livre
 	 
-		 query = JPA.em().createNativeQuery("update parquimetro set statusVaga = '', dataHoraOcupacao='', placaVeiculoOcupacao='', usuarioEstacioneAki=null, valorAPagar=null, valorPago=null, tempoocupacao=null where idVaga = 1");  
+		 query = JPA.em().createNativeQuery("update parquimetro set statusVaga = '', dataHoraOcupacao='', placaVeiculoOcupacao='', usuarioEstacioneAki='0', valorAPagar='0', valorPago='0', tempoocupacao='00:00' where idVaga = 1");  
 		 result = query.executeUpdate();
 		 
 	 } else if (intstatusParquimetro == 1) {  // Vaga ocupada por um veículo
