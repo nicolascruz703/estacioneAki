@@ -1,3 +1,0 @@
-alter table parquimetro modify placaVeiculoOcupacao varchar (8);
-alter table parquimetro modify dataHoraOcupacao varchar (19);
-alter table parquimetro modify statusVaga int (11);

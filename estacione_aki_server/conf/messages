@@ -1,6 +1,21 @@
 # You can specialize this file for each language.
-# For example, for French create a messages.fr file
+# For exemple, for french create a messages.fr file
 #
+
+name=Nome
+email=Email
+password=Senha
+fullname=Nome Completo
+isAdmin=Usuário Administrativo
+
+secure.username=Usuário:
+secure.password=Senha:
+secure.signin=Entrar
+Log out=Sair
+
+#########################
+# Estacione Aki
+
 nome=nome do estacionamento
 endereco=endereço
 cnpj=cnpj
@@ -16,10 +31,20 @@ modeloVeiculo=Modelo do Veículo
 placaVeiculo=Placa do Veículo
 dataHoraReserva=Horário Reserva
 reservaEstacionamento=Estacionamento
+senha=Senha Celular
 
 #Dados Parquimetro
 id=Identificador Parquímetro
 idVaga=Identificador Vaga Parquímetro
+
+#Dados logParquimetro
+dataHoraOcupacao=Horário Entrada
+idParquimetro = Parquimetro
+idVaga = Vaga no Parquimetro
+placaVeiculoOcupacao = Placa Veículo
+tempoOcupacao=Tempo de Ocupação
+valorAPagar=Valor a Pagar
+valorDevido=Valor Devido
 
 # play/modules/crud (administration) 
 crud.title = Administração 

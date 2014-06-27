@@ -1,87 +1,44 @@
 *{ You can use plain selenium command using the selenium tag }*
 
-#{selenium}
-    // Open the home page, and check that no error occured
-    open('/admin')
-    assertNotTitle('Application error')
+#{fixture delete:'all', load:'data.yml' /}
+ 
+#{selenium 'Check home page'}
+    clearSession()
+ 
+    // Open the home page
+    open('/')
 
-   // #1 Verificação da 1.a tela
-    assertTextPresent('Tipo de Objeto')
-
-   // #2 Navegação para a tela de estacionamento
-    clickAndWait('link=Adicionar')
-   
-   // #3 Estacionamento - Inserção sem preenchimento -> Erro
-	clickAndWait('name=_save')
-	assertTextPresent('Corrija os erros por favor')
-	    
-   // #4 Estacionamento - Inserção com sucesso 
-    type('id=object_nome', 'Estacionamento da FEA')
-	type('id=object_endereco', 'Rua Prof Almeida Prado, 22')
-	type('id=object_cnpj', '63025530000108')
-	type('id=object_latitude', '-23.558609')
-	type('id=object_longitude', '-46.729145')
-	type('id=object_numeroDeVagas', '10')
-	type('id=object_precoHora', '1')
-	clickAndWait('name=_save')
-	//assertTextPresent('Estacionamento criado')
-	
-   // #5 Estacionamento - Edição com sucesso
-	clickAndWait('link=Estacionamento da FEA')	
-	assertTextPresent('Estacionamento da FEA')
-	type('id=object_endereco', 'Rua Prof Almeida Prado, 23')	
-	clickAndWait('name=_save')	
-	//assertTextPresent('Estacionamento gravado')
-
-   // #6 Navegação para a Home
-    clickAndWait('link=Home')
-
-   // #7 Navegação para a Tela de Motorista
-	clickAndWait('xpath=(//a[contains(text(),"Adicionar")])[2]')
-
-   // #8 Motorista - Inserção com sucesso 
-    type('id=object_nomeMotorista', 'Marcos Chaim')
-	type('id=object_cpf', '10987654321')
-	type('id=object_marcaVeiculo', 'Ford')
-	type('id=object_modeloVeiculo', 'Focus')
-	type('id=object_placaVeiculo', 'XXX-1234')
-	clickAndWait('name=_save')
-	assertTextPresent('Motorista criado')
-
-   // #5 Motorista - Edição com sucesso
-	clickAndWait('link=Marcos Chaim')	
-	//assertTextPresent('Marcos Chaim')
-	type('id=object_placaVeiculo', 'XYZ-1234')	
-	clickAndWait('name=_save')	
-	assertTextPresent('Motorista gravado')
-
-   // #6 WS Listagem de Estacionamentos
-	open('/mobileinterface/listaestacionamento')
-	//driver.findElement(By.XPath("Estacionamento da FEA"))
-	
-	// #7 Solicita reserva para o motorista estacionamento recém cadastrado 
-	open('/mobileinterface/reservaVaga?cnpj=63025530000108&cpf=10987654321')
-
-	// #8 Confirma reserva realizada
-	open('/admin')
-	clickAndWait('link=Motoristas')
-	assertTextPresent('Estacionamento da FEA')
-	  
-	// #9 Solicita cancelamento da reserva para o motorista recém cadastrado 
-	open('/mobileinterface/cancelaReservaVaga?cpf=10987654321')
-
-	// #10 Confirma reserva cancelada
-	open('/admin')
-	clickAndWait('link=Motoristas')
-	assertTextNotPresent('Estacionamento da FEA')
-
-	// #11 Limpar o banco
-	clickAndWait('link=Marcos Chaim')
-	clickAndWait('css=p.crudDelete > input[type="submit"]')
-	clickAndWait('link=Home')
-	clickAndWait('link=Estacionamentos')
-	clickAndWait('link=Estacionamento da FEA')
-	clickAndWait('css=p.crudDelete > input[type="submit"]')
-	
+    // Check that the front post is present
+    assertTextPresent('About the model layer')
+    assertTextPresent('by Bob')
+    assertTextPresent('2 comments*,*latest by Mike')
+    assertTextPresent('It is the domain-specific representation')
+    
+    // Check older posts
+    assertTextPresent('The MVC application')
+    assertTextPresent('Just a test of YABE')    
 #{/selenium}
 
+#{selenium 'Test comments'}
+
+    // Click on 'The MVC application post'
+    clickAndWait('link=The MVC application')
+    assertTextPresent('The MVC application')
+    assertTextPresent('no comments')
+    
+    // Post a new comment
+    type('content', 'Hello')
+    clickAndWait('css=input[type=submit]')
+    
+    // Should get an error
+    assertTextPresent('no comments')
+    assertTextPresent('Author is required')
+    type('author', 'Me')
+    type('code', 'XXXX')
+    clickAndWait('css=input[type=submit]')
+    
+    // Check
+    assertTextPresent('Thanks for posting Me')
+    assertTextPresent('1 comment')
+    assertTextPresent('Hello')
+#{/selenium}

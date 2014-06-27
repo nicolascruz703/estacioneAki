@@ -78,7 +78,7 @@ public class telaParquimetro extends Controller {
 		 } else intvalorAPagar = Integer.parseInt(strvalorAPagar);
 			 
 		 query = JPA.em().createNativeQuery("update parquimetro set statusVaga = '3', valorAPagar='" + intvalorAPagar + "', valorPago='" + strvalorPago + "'  where idVaga = 1");  
-		 result = query.executeUpdate();
+		 result = query.executeUpdate(); 
 	 }
 
      telaParquimetro.index();

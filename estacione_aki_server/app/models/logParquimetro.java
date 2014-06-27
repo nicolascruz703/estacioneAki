@@ -13,7 +13,6 @@ import controllers.CRUD.Hidden;
 @Table(name = "logParquimetro")
 public class logParquimetro  extends Model {
 		
-	   @Hidden
 	   @Column(name = "dataHoraOcupacao")
 	   public String dataHoraOcupacao;
 
@@ -25,19 +24,15 @@ public class logParquimetro  extends Model {
 	   @Column(name = "idVaga")
 	   public Integer idVaga;
 	   
-	   @Hidden
 	   @Column(name = "placaVeiculoOcupacao")
 	   public String placaVeiculoOcupacao;
 
-	   @Hidden
 	   @Column(name = "tempoOcupacao")
 	   public String tempoOcupacao;
 	   
-	   @Hidden
 	   @Column(name = "valorAPagar")
 	   public String valorAPagar;
 	   
-	   @Hidden
 	   @Column(name = "valorDevido")
 	   public String valorDevido;	  
 }

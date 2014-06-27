@@ -1,5 +1,0 @@
-alter table parquimetro modify statusVaga varchar(1);
-alter table parquimetro modify usuarioEstacioneAki varchar (1);
-alter table parquimetro modify valorAPagar varchar (3);
-alter table parquimetro modify valorPago varchar (3);
-alter table parquimetro modify tempoOcupacao varchar (10);

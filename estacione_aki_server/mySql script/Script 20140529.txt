@@ -1,5 +1,0 @@
-use schestacione;
-
-alter table parquimetro  modify endereco varchar (100);
-alter table parquimetro modify latitude varchar (10);
-alter table parquimetro modify longitude varchar (10);

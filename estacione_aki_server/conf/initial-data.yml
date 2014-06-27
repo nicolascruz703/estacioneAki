@@ -1,0 +1,27 @@
+# Test data
+
+User(bob):
+    email:          marco
+    password:       123
+    fullname:       Marco Wang
+    isAdmin:        true
+    userType:       A
+    
+User(jeff):
+    email:          bruno
+    password:       123
+    fullname:       Bruno Tenório
+    userType:       M    
+    
+User(paul):
+    email:          ana
+    password:       123
+    fullname:       Ana Rocio
+    userType:       E
+    
+Parquimetro:
+    idVaga:         1
+    endereco:       Rua A
+    latitude:       -23.4535
+    longitude:      -45.3242
+    precoHora:      3

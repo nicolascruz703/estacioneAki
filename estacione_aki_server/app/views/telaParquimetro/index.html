@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Simulador de Parquimetro</title>
-     <meta charset="utf-8" />
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
- </head>
-<body>
+#{extends 'admin.html' /}
+
+<style>
+<!--
+body {
+	color: white;
+}
+-->
+</style>
+
+<body onload="clickStatus();">
 	<form action="@{telaParquimetro.executaParquimetro()}" method="GET">
 		<p>Simulador de Parquimetro</p>
 
@@ -68,6 +70,61 @@
 		<p>&nbsp;</p>
 		
 		<script> 
+		
+		 function clickStatus()
+		 {
+			 for(var i=0;i<document.forms[0].elements.length;i++)
+			  {
+			    if(document.forms[0].elements[i].name=="intstatusParquimetro")
+			    {
+			     if(document.forms[0].elements[i].value=="0")
+			     {
+			       if(document.forms[0].elements[i].checked==true){
+						 document.forms[0].intstatusParquimetro[0].disabled=false;
+						 document.forms[0].intstatusParquimetro[1].disabled=false;
+						 document.forms[0].intstatusParquimetro[2].disabled=true;
+						 document.forms[0].intstatusParquimetro[3].disabled=true;
+						 document.forms[0].strplacaVeiculoOcupacao.disabled=false;
+						 document.forms[0].strvalorPago.disabled=true;
+			       }
+			     }
+			     else if(document.forms[0].elements[i].value=="1")
+			     {
+			       if(document.forms[0].elements[i].checked==true){
+						 document.forms[0].intstatusParquimetro[0].disabled=true;
+						 document.forms[0].intstatusParquimetro[1].disabled=false;
+						 document.forms[0].intstatusParquimetro[2].disabled=false;
+						 document.forms[0].intstatusParquimetro[3].disabled=false;
+						 document.forms[0].strplacaVeiculoOcupacao.disabled=false;
+						 document.forms[0].strvalorPago.disabled=true;
+			       }
+			     }			 
+			     else if(document.forms[0].elements[i].value=="2")
+			     {
+			       if(document.forms[0].elements[i].checked==true){
+						 document.forms[0].intstatusParquimetro[0].disabled=true;
+						 document.forms[0].intstatusParquimetro[1].disabled=true;
+						 document.forms[0].intstatusParquimetro[2].disabled=false;
+						 document.forms[0].intstatusParquimetro[3].disabled=false;
+						 document.forms[0].strplacaVeiculoOcupacao.disabled=true;
+						 document.forms[0].strvalorPago.disabled=false;
+			       }
+			     }			 
+			     else if(document.forms[0].elements[i].value=="3")
+			     {
+			       if(document.forms[0].elements[i].checked==true){
+						 document.forms[0].intstatusParquimetro[0].disabled=false;
+						 document.forms[0].intstatusParquimetro[1].disabled=true;
+						 document.forms[0].intstatusParquimetro[2].disabled=true;
+						 document.forms[0].intstatusParquimetro[3].disabled=false;
+						 document.forms[0].strplacaVeiculoOcupacao.disabled=true;
+						 document.forms[0].strvalorPago.disabled=false;
+			       }
+			     }
+			    }
+			  }
+		    }
+		 
 			var strstatusVaga = 0 + 0${oParquimetro.statusVaga};
 			
 			document.write("<div><input name=\"intstatusParquimetro\" type=\"radio\" value=\"0\"");
@@ -89,7 +146,7 @@
 		</script>
 			
 		<br>
-		<input type="submit" value="Processa Parquímetro" onClick="window.location.href=window.location.href"/>
+		<input name="goParquimetro" type="submit" value="Processa Parquímetro" onClick="window.location.href=window.location.href"/>
 	</form>
 </body>
 </html>
