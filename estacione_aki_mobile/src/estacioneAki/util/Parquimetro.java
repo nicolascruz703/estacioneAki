@@ -24,14 +24,6 @@ public class Parquimetro {
 	private String dataHoraOcupacao;
 	@Element(required = false)
 	private String placaVeiculoOcupacao;
-	@Element(required = false)
-	private String usuarioEstacioneAki;
-	@Element(required = false)
-	private String tempoOcupacao;
-	@Element(required = false)
-	private String valorAPagar;
-	@Element(required = false)
-	private String valorPago;
 	
 	public String getId() {
 		return id;
