@@ -27,12 +27,13 @@
         
         <div id="menu">
 	        <div class="collapse navbar-collapse" id="main" style="padding-bottom: 0px;">
-		        <span style="font-size: 16px; color: white; margin: 10px;">
-					Perfil Administrador
-		        </span>
 	            <ul class="nav navbar-nav sub-menu" id="adminMenu" style="width: 100%;">
 	
 	                #{secure.check 'A'}
+
+		        	<span style="font-size: 16px; color: white; margin: 10px;">
+						Perfil Administrador
+		        	</span> <br>
 	            	<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Cadastros<b class="caret"></b></a>
 						<ul class="dropdown-menu genericBox">
@@ -46,7 +47,7 @@
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Relatórios<b class="caret"></b></a>
 						<ul class="dropdown-menu genericBox">
 		        			<li><a href="@{Motoristas.listaReserva()}">Reservas Estacionamentos</a></li>
-							<li><a href="@{Estacionamentos.list()}">Movimentação Estacionamentos</a></li>
+							<li><a href="@{logEstacionamentos.list()}">Movimentação Estacionamentos</a></li>
 							<li><a href="@{logParquimetros.list()}">Movimentação Parquimetro</a></li>
 						</ul>
 					</li>
@@ -62,29 +63,43 @@
 	                #{/secure.check}
 	
 	                #{secure.check 'E'}
-					<br>Perfil Estacionamento</br>
+		        	<span style="font-size: 16px; color: white; margin: 10px;">
+						Perfil Estacionamento
+		        	</span> <br>
 	            	<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Entrada/Saida<b class="caret"></b></a>
 						<ul class="dropdown-menu genericBox">
-		        			<li><a href="@{Motoristas.list()}">Entrada</a></li>
-							<li><a href="@{Estacionamentos.list()}">Saída</a></li>
+							<li><a href="@{inEstacionamentos.blank()}">Entrada</a></li>
+							<li><a href="@{logEstacionamentos.listaSaida()}">Saída</a></li>
 						</ul>
 					</li>
 	
-	      			<li><a href="@{Motoristas.list()}">Reservas Estacionamentos</a></li>
-					<li><a href="@{Estacionamentos.list()}">Meus Dados</a></li>
-					<li><a href="@{Estacionamentos.list()}">Movimentação Estacionamentos</a></li>
-	
+	      			<li><a href="@{Motoristas.listaReserva()}">Reservas Estacionamentos</a></li>
+					<li><a href="@{logEstacionamentos.list()}">Movimentação Estacionamentos</a></li>
+					
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Meus Dados<b class="caret"></b></a>
+						<ul class="dropdown-menu genericBox">
+							<li><a href="@{Estacionamentos.show(session.get("idEstacionamento"))}">Estacionamento</a></li>
+							<li><a href="@{Users.show(session.get("idUser"))}">Usuário</a></li>
+						</ul>
+					</li>
+						
 	                #{/secure.check}
 	
 	                #{secure.check 'M'}
-					<br>Perfil Motorista</br>
-	            	<li class="dropdown">
+					<span style="font-size: 16px; color: white; margin: 10px;">
+						Perfil Motorista
+		        	</span> <br>
+		        	
+		        	<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Meus Dados<b class="caret"></b></a>
 						<ul class="dropdown-menu genericBox">
-							<li><a href="@{Motoristas.list()}">Meus Dados</a></li>
+							<li><a href="@{Motoristas.show(session.get("idMotorista"))}">Veículo</a></li>
+							<li><a href="@{Users.show(session.get("idUser"))}">Usuário</a></li>
 						</ul>
 					</li>
-	
+		        	
 	                #{/secure.check}
 	
 	            </ul>

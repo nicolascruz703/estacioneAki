@@ -3,14 +3,14 @@
 
 <div id="crudList" class="${type.name}">
 
-    <h2 id="crudListTitle">&{"Listagem de Reserva de Vagas"}</h2>
+    <h2 id="crudListTitle">&{"Historico de Movimentacao de Estacionamentos"}</h2>
 
     <div id="crudListSearch">
         #{crud.search /}
     </div>
 
     <div id="crudListTable">
-        #{crud.table fields:['nomeMotorista', 'cpf', 'modeloVeiculo', 'placaVeiculo', 'dataHoraReserva', 'reservaEstacionamento'] /}
+        #{crud.table fields:['cnpj', 'dataHoraEntrada', 'placaVeiculoOcupacao', 'tempoOcupacao'] /}
     </div>
 
     <div id="crudListPagination">

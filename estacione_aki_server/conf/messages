@@ -64,14 +64,14 @@ crud.pagination.last = Último »»
 crud.pagination.first = «« Primeiro 
 crud.show.title = Alterar &{%s} 
 crud.save = Gravar 
-crud.saveAndContinue = Gravar e continuar a edição 
+crud.saveAndContinue = Confirmar 
 crud.cancel = Cancelar 
 crud.hasErrors = Corrija os erros por favor 
 crud.blank.title = Adicionar &{%s} 
 crud.saveAndAddAnother = Gravar e Adicionar outro 
 crud.delete = Apagar &{%s} 
-crud.created = &{%s} criado 
-crud.saved = &{%s} gravado 
+crud.created = &{%s} criado(a) 
+crud.saved = &{%s} gravado(a) 
 crud.deleted = &{%s} apagado 
 crud.delete.error = Não é possível excluir 
 crud.search = Procurar 
@@ -89,3 +89,15 @@ crud.help.past = No passado.
 crud.help.after = Depois %s. 
 crud.help.before = Antes %s. 
 crud.help.range = Entre %d e %d 
+
+
+inEstacionamento = Entrada
+logEstacionamento = Saída
+dataHoraEntrada = Data Hora Entrada
+ocupado = Ocupado?
+
+User=Usuário
+email=Login
+cnpj=CNPJ Estacionamento
+userType = Tipo de Usuário
+cpfcnpj = CPF ou CNPJ

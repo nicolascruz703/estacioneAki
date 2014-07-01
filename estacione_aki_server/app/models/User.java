@@ -1,8 +1,9 @@
 package models;
  
 import java.util.*;
+
 import javax.persistence.*;
- 
+
 import play.db.jpa.*;
 import play.data.validation.*;
  
@@ -13,13 +14,14 @@ public class User extends Model {
     public String email;
     
     @Required
+    @Password
     public String password;
     
     public String fullname;
     
-    public Boolean isAdmin;
-    
     public String userType;
+    
+    public String cpfcnpj;
     
     public User(String email, String password, String fullname) {
         this.email = email;

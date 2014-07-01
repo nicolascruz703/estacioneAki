@@ -1,0 +1,11 @@
+DELIMITER $$
+CREATE TRIGGER triggerInEstacionamento
+AFTER INSERT ON inestacionamento
+FOR EACH ROW 
+BEGIN
+INSERT INTO logestacionamento (cnpj, dataHoraEntrada, ocupado, placaVeiculoOcupacao, tempoOcupacao) 
+select cnpj, date_format(current_timestamp, '%d/%m/%Y %k:%i:%s'), 1, placaVeiculoOcupacao, '00:00:00' from inestacionamento order by id desc limit 1;
+END$$
+DELIMITER ;
+
+alter table user modify cpfcnpj varchar (14);

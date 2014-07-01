@@ -1,0 +1,79 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.show.title', type.modelName) /}
+
+<div id="crudShow" class="${type.name}">
+
+    <h2 id="crudShowTitle">&{'Saida de Veiculos Estacionados'}</h2>
+
+    <div class="objectForm">
+    
+  <body onload="prepPage();">
+
+
+		<script> 
+		
+		 function prepPage()
+		 {
+
+			 for(var i=0;i<document.forms[0].elements.length;i++)
+			  {
+			 		if(document.forms[0].elements[i].type == "text")
+			 		{
+			 			if(document.forms[0].elements[i].name == "object.dataHoraEntrada")
+			 			{ var strDtHrIn = document.forms[0].elements[i].value; }
+			 			
+			 			if(document.forms[0].elements[i].name == "object.tempoOcupacao")
+			 			{
+			 				var strDtHrInb = strDtHrIn.substring(6,10) + "-" + strDtHrIn.substring(3,5) + "-" + strDtHrIn.substring(0,2) + " " + strDtHrIn.substring(11);
+			 				document.forms[0].elements[i].value=get_time_diff (strDtHrInb);
+			 			}
+			 			document.forms[0].elements[i].disabled=false;
+				 		document.forms[0].elements[i].style.backgroundColor = "#364B66";
+				 		document.forms[0].elements[i].style.color = "white";
+				 		document.forms[0].elements[i].style.border= "#364B66";
+			 		}
+			  }
+		 }
+			 
+		 function get_time_diff(datetime)
+		 {
+		     var datetime = new Date(datetime).getTime();
+		     var now = new Date().getTime();
+		     
+	         var milisec_diff = now - datetime;
+
+		     var xdays = Math.floor(milisec_diff / 1000 / 60 / 60 / 24);
+		     milisec_diff -= xdays * 1000 * 60 * 60 * 24;
+
+		     var xhours = Math.floor(milisec_diff / 1000 / 60 / 60);
+		     milisec_diff -= xhours * 1000 * 60 * 60;
+
+		     var xminutes = Math.floor(milisec_diff / 1000 / 60);
+		     milisec_diff -= xminutes * 1000 * 60;
+
+		     var xseconds = Math.floor(milisec_diff / 1000);
+		     
+		     xhours = xhours + (xdays *24); 
+
+		     return ((xhours<10) ? "0" : "") + xhours + ":" + ((xminutes<10) ? "0" : "") + xminutes + ":" + ((xseconds<10) ? "0" : "") + xseconds;
+		 }
+		 
+		 
+	   </script>
+			 
+    #{form action:@save(object._key()), enctype:'multipart/form-data'}
+        #{crud.form /}
+        <p class="crudButtons">
+            <input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+        </p>
+    #{/form}
+    </div>
+
+  </body>
+	
+    #{form @delete(object._key())}
+        <p class="crudDelete">
+        </p>
+    #{/form}
+
+</div>

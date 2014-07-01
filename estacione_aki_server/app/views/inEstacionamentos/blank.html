@@ -1,0 +1,42 @@
+#{extends 'CRUD/layout.html' /}
+#{set title:messages.get('crud.blank.title', type.modelName) /}
+
+<div id="crudBlank" class="${type.name}">
+
+    <h2 id="crudBlankTitle">&{"Registro de entrada de Veiculos"}</h2>
+
+    <div class="objectForm">
+    
+    <body onload="prepPage();">
+    
+    <script> 
+		
+    function prepPage()
+		 {
+			<!-- Recupera o CNPJ da variável de sessão -->
+			 for(var i=0;i<document.forms[0].elements.length;i++)
+			  {
+			 		if(document.forms[0].elements[i].name == "object.cnpj")
+			 		{
+			 			if(document.forms[0].elements[i].name == "object.cnpj")
+			 			{
+					 		document.forms[0].elements[i].style.backgroundColor = "#364B66";
+					 		document.forms[0].elements[i].style.color = "white";
+					 		document.forms[0].elements[i].style.border= "#364B66";
+					 		document.forms[0].elements[i].value= '${session.get("cpfcnpj")}';
+			 			}
+			 		}
+			  }
+		 }
+    
+    </script>
+    
+    #{form action:@create(), enctype:'multipart/form-data'}
+        #{crud.form /}
+        <p class="crudButtons">
+              <input type="submit" name="_saveAndContinue" value="&{'crud.saveAndContinue', type.modelName}" />
+        </p>
+    #{/form}
+    </div>
+  </body>
+</div>

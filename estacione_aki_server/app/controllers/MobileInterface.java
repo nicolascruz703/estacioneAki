@@ -105,7 +105,7 @@ public class MobileInterface extends Controller {
 	    		result = query.executeUpdate();
 	    		System.out.println("Cancelada Reserva Estacionamento:" + strReservaCNPJ);
 		    	
-		    	// atualiza o registro de motorista com o cnpj do estacionamento
+		    	// limpa o registro de reserva de motorista 
 	    		query = JPA.em().createNativeQuery("update motorista set reservaCNPJ = '', reservaEstacionamento = '', dataHoraReserva = '' where cpf ='" + cpf +"'");  
 	    		result = query.executeUpdate();
 	    		System.out.println("Cancelado reserva Motorista:" + cpf);
